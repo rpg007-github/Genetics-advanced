@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Genetics — Deep Concepts &amp; Mechanisms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101214;
+      --bg2: #181a1e;
+      --bg3: #1f2228;
+      --card: #1c1e23;
+      --card-hover: #22252b;
+      --text: #e0ddd5;
+      --text-soft: #8a8780;
+      --text-dim: #5c5a55;
+      --accent: #c4915e;
+      --accent-light: #d4a87a;
+      --accent-bg: rgba(196,145,94,0.08);
+      --accent-border: rgba(196,145,94,0.25);
+      --teal: #5ba89a;
+      --teal-bg: rgba(91,168,154,0.08);
+      --teal-border: rgba(91,168,154,0.25);
+      --red: #c75f5f;
+      --red-bg: rgba(199,95,95,0.08);
+      --red-border: rgba(199,95,95,0.25);
+      --blue: #6b8fc4;
+      --blue-bg: rgba(107,143,196,0.08);
+      --green-ok: #5ba865;
+      --green-bg: rgba(91,168,101,0.08);
+      --green-border: rgba(91,168,101,0.25);
+      --yellow: #c4b45e;
+      --yellow-bg: rgba(196,180,94,0.1);
+      --yellow-border: rgba(196,180,94,0.25);
+      --border: #2a2d33;
+      --border-light: #33363d;
+      --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Karla',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased}
+
+    .hero{background:linear-gradient(160deg,#0d0e10 0%,#1a1510 40%,#201a12 70%,#0d0e10 100%);padding:4rem 2rem 3.5rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 50% 60%,rgba(196,145,94,0.06),transparent)}
+    .hero .badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-border);padding:0.2rem 0.7rem;border-radius:2px;margin-bottom:1rem;position:relative}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text);letter-spacing:-0.01em;position:relative}
+    .hero .sub{font-size:0.95rem;color:var(--text-soft);max-width:600px;margin:0.5rem auto 0;position:relative}
+
+    .container{max-width:920px;margin:0 auto;padding:2rem 1.25rem 4rem}
+
+    .toc{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:2.5rem}
+    .toc h2{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem}
+    .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0.2rem 1.5rem}
+    .toc a{color:var(--text-soft);text-decoration:none;font-size:0.88rem;padding:0.18rem 0;display:block;transition:color 0.15s}
+    .toc a:hover{color:var(--accent)}
+    .toc a .n{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--accent);margin-right:0.4rem;opacity:0.7}
+
+    .section{margin-bottom:3.5rem}
+    .stag{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.25rem}
+    .stitle{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:0.3rem}
+    .ssub{font-size:0.9rem;color:var(--text-soft);margin-bottom:1.2rem;max-width:700px}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.4rem 1.6rem;margin-bottom:1rem;transition:border-color 0.2s}
+    .card:hover{border-color:var(--border-light)}
+    .card h3{font-family:'Playfair Display',serif;font-size:1.08rem;font-weight:600;color:var(--accent-light);margin-bottom:0.5rem}
+    .card p{font-size:0.92rem;line-height:1.75;margin-bottom:0.5rem;color:var(--text)}
+    .card p:last-child{margin-bottom:0}
+
+    .ex{background:var(--accent-bg);border-left:2px solid var(--accent);border-radius:0 4px 4px 0;padding:0.65rem 1rem;margin:0.65rem 0;font-size:0.89rem;line-height:1.7}
+    .ex .tag{font-weight:700;color:var(--accent);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.1rem}
+
+    .kp{background:var(--teal-bg);border-left:2px solid var(--teal);border-radius:0 4px 4px 0;padding:0.65rem 1rem;margin:0.65rem 0;font-size:0.89rem;line-height:1.7}
+    .kp .tag{font-weight:700;color:var(--teal);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.1rem}
+
+    .warn{background:var(--yellow-bg);border-left:2px solid var(--yellow);border-radius:0 4px 4px 0;padding:0.65rem 1rem;margin:0.65rem 0;font-size:0.89rem;line-height:1.7}
+    .warn .tag{font-weight:700;color:var(--yellow);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.1rem}
+
+    .fi{font-family:'JetBrains Mono',monospace;background:var(--blue-bg);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.84rem;color:var(--blue);white-space:nowrap}
+
+    .tbl{width:100%;border-collapse:collapse;font-size:0.89rem;margin:0.65rem 0}
+    .tbl th{text-align:left;padding:0.4rem 0.65rem;background:var(--bg3);font-weight:600;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-soft);border-bottom:1px solid var(--border)}
+    .tbl td{padding:0.38rem 0.65rem;border-bottom:1px solid var(--border);color:var(--text)}
+    .tbl tr:last-child td{border-bottom:none}
+
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    @media(max-width:700px){.g2{grid-template-columns:1fr}.toc-grid{grid-template-columns:1fr}.fc-grid{grid-template-columns:1fr!important}}
+
+    /* Quiz */
+    .qq{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.15rem 1.35rem;margin-bottom:0.85rem}
+    .qq .qn{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.2rem}
+    .qq .qt{font-family:'Playfair Display',serif;font-size:0.98rem;font-weight:500;margin-bottom:0.6rem;color:var(--text)}
+    .qo{list-style:none}
+    .qo li{margin-bottom:0.2rem}
+    .qo label{display:flex;align-items:flex-start;gap:0.45rem;padding:0.35rem 0.55rem;border-radius:4px;cursor:pointer;font-size:0.9rem;border:1px solid transparent;transition:all 0.15s;color:var(--text)}
+    .qo label:hover{background:var(--bg3);border-color:var(--border)}
+    .qo input[type="radio"]{margin-top:0.22rem;accent-color:var(--accent);flex-shrink:0}
+    .qo label.ok{background:var(--green-bg);border-color:var(--green-border);color:#8ad494}
+    .qo label.no{background:var(--red-bg);border-color:var(--red-border);color:#d48a8a}
+    .qo label.sr{background:var(--green-bg);border-color:var(--green-border)}
+    .qfb{margin-top:0.4rem;padding:0.4rem 0.6rem;border-radius:4px;font-size:0.85rem;line-height:1.6;display:none}
+    .qfb.show{display:block}
+    .qfb.y{background:var(--green-bg);color:#8ad494;border-left:2px solid var(--green-ok)}
+    .qfb.n{background:var(--red-bg);color:#d48a8a;border-left:2px solid var(--red)}
+
+    .btn{font-family:'Karla',sans-serif;font-size:0.88rem;font-weight:600;padding:0.5rem 1.3rem;border-radius:4px;border:none;cursor:pointer;transition:all 0.15s}
+    .bp{background:var(--accent);color:var(--bg)}.bp:hover{background:var(--accent-light)}
+    .bs{background:var(--bg3);color:var(--text-soft);border:1px solid var(--border)}.bs:hover{background:var(--card-hover)}
+    .qc{display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:wrap}
+    .qsc{background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:6px;padding:1rem 1.5rem;margin-top:1rem;display:none;text-align:center}
+    .qsc .big{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--accent-light)}
+    .qsc .sm{font-size:0.85rem;color:var(--text-soft)}
+
+    /* Flashcards */
+    .fcf{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.1rem}
+    .fcb{font-family:'Karla',sans-serif;font-size:0.78rem;padding:0.25rem 0.65rem;border-radius:2px;border:1px solid var(--border);background:var(--card);color:var(--text-soft);cursor:pointer;transition:all 0.15s}
+    .fcb:hover{border-color:var(--accent);color:var(--accent)}
+    .fcb.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+    .fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.85rem}
+    .fc{perspective:700px;height:220px;cursor:pointer}
+    .fci{position:relative;width:100%;height:100%;transition:transform 0.45s ease;transform-style:preserve-3d}
+    .fc.fl .fci{transform:rotateY(180deg)}
+    .fcfr,.fcbk{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.15rem;text-align:center}
+    .fcfr{background:var(--card)}
+    .fcfr .t{font-family:'JetBrains Mono',monospace;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.5rem;opacity:0.7}
+    .fcfr .q{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;line-height:1.5;color:var(--text)}
+    .fcfr .h{font-size:0.7rem;color:var(--text-dim);margin-top:auto;padding-top:0.3rem}
+    .fcbk{background:linear-gradient(145deg,#2a2015,#1a1510);color:var(--text);transform:rotateY(180deg);border-color:var(--accent-border)}
+    .fcbk .t{font-family:'JetBrains Mono',monospace;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);opacity:0.6;margin-bottom:0.5rem}
+    .fcbk .a{font-size:0.9rem;line-height:1.65}
+
+    /* Short Answer */
+    .sa-q{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:1.1rem}
+    .sa-q .qn{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.2rem}
+    .sa-q .qt{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;margin-bottom:0.7rem;color:var(--text);line-height:1.6}
+    .sa-ta{width:100%;min-height:100px;padding:0.6rem 0.75rem;border:1px solid var(--border);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.9rem;line-height:1.6;resize:vertical;background:var(--bg2);color:var(--text);transition:border-color 0.2s}
+    .sa-ta:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(196,145,94,0.1)}
+    .sa-ta::placeholder{color:var(--text-dim)}
+    .sa-btn{margin-top:0.5rem;font-family:'Karla',sans-serif;font-size:0.85rem;font-weight:600;padding:0.4rem 1.1rem;border-radius:4px;border:1px solid var(--accent-border);background:var(--accent-bg);color:var(--accent);cursor:pointer;transition:all 0.15s}
+    .sa-btn:hover{background:var(--accent);color:var(--bg)}
+    .sa-btn:disabled{opacity:0.4;cursor:not-allowed}
+    .sa-fb{margin-top:0.6rem;padding:0.65rem 0.85rem;border-radius:4px;font-size:0.87rem;line-height:1.65;display:none}
+    .sa-fb.show{display:block}
+    .sa-fb.g-good{background:var(--green-bg);color:#8ad494;border-left:2px solid var(--green-ok)}
+    .sa-fb.g-partial{background:var(--yellow-bg);color:#d4c88a;border-left:2px solid var(--yellow)}
+    .sa-fb.g-needs{background:var(--red-bg);color:#d48a8a;border-left:2px solid var(--red)}
+    .sa-score-bar{height:4px;border-radius:2px;background:var(--bg3);margin:0.5rem 0 0.3rem;overflow:hidden}
+    .sa-score-fill{height:100%;border-radius:2px;transition:width 0.4s ease}
+    .sa-score-fill.high{background:var(--green-ok)}
+    .sa-score-fill.mid{background:var(--yellow)}
+    .sa-score-fill.low{background:var(--red)}
+    .sa-details{font-size:0.82rem;color:var(--text-soft);margin-top:0.3rem}
+    .sa-details summary{cursor:pointer;color:var(--accent);font-weight:500;margin-bottom:0.3rem}
+    .sa-model{background:var(--bg3);border-radius:4px;padding:0.6rem 0.8rem;margin-top:0.5rem;font-size:0.85rem;line-height:1.65;color:var(--text);border-left:2px solid var(--accent-border)}
+    .sa-concepts{margin-top:0.4rem}
+    .sa-concept{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:2px;margin:0.15rem 0.2rem 0.15rem 0}
+    .sa-concept.hit{background:var(--green-bg);color:#8ad494;border:1px solid var(--green-border)}
+    .sa-concept.miss{background:var(--bg3);color:var(--text-dim);border:1px solid var(--border)}
+
+    .footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-size:0.78rem;border-top:1px solid var(--border);margin-top:2rem}
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Advanced Level</div>
+  <h1>Advanced Genetics</h1>
+  <p class="sub">Epigenetics, genomic architecture, quantitative genetics, advanced molecular mechanisms, and evolutionary genomics. Exam-level depth with worked reasoning.</p>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <div class="toc-grid">
+      <a href="#s1"><span class="n">01</span>Epigenetics &amp; Chromatin</a>
+      <a href="#s2"><span class="n">02</span>Genomic Architecture</a>
+      <a href="#s3"><span class="n">03</span>Advanced Gene Regulation</a>
+      <a href="#s4"><span class="n">04</span>Quantitative Genetics</a>
+      <a href="#s5"><span class="n">05</span>Advanced Molecular Mechanisms</a>
+      <a href="#s6"><span class="n">06</span>Transposable Elements &amp; Genome Evolution</a>
+      <a href="#s7"><span class="n">07</span>Cancer Genetics</a>
+      <a href="#s8"><span class="n">08</span>Population &amp; Evolutionary Genomics</a>
+      <a href="#s9"><span class="n">09</span>Advanced Biotechnology</a>
+      <a href="#quiz"><span class="n">10</span>Multiple Choice Quiz</a>
+      <a href="#fc"><span class="n">11</span>Flashcards</a>
+      <a href="#sa"><span class="n">12</span>Short Answer (Graded)</a>
+    </div>
+  </div>
+
+  <!-- ===== S1: EPIGENETICS ===== -->
+  <div class="section" id="s1">
+    <div class="stag">Section 01</div>
+    <div class="stitle">Epigenetics &amp; Chromatin Biology</div>
+    <p class="ssub">Heritable changes in gene expression that don't alter the DNA sequence itself.</p>
+
+    <div class="card">
+      <h3>Chromatin Structure &amp; the Histone Code</h3>
+      <p>DNA wraps around <strong>histone octamers</strong> (2 each of H2A, H2B, H3, H4) to form nucleosomes, the basic unit of chromatin. <strong>H1</strong> is the linker histone. The N-terminal tails of histones extend outward and are targets for covalent modifications that regulate gene access.</p>
+      <p><strong>Euchromatin</strong> (loosely packed, transcriptionally active) vs. <strong>heterochromatin</strong> (tightly packed, transcriptionally silent). Constitutive heterochromatin (centromeres, telomeres) is always condensed; facultative heterochromatin (e.g., the inactive X) can switch states.</p>
+      <table class="tbl">
+        <tr><th>Modification</th><th>Residue</th><th>Effect</th></tr>
+        <tr><td>H3K4me3</td><td>Histone H3 Lysine 4</td><td>Active promoter mark</td></tr>
+        <tr><td>H3K27me3</td><td>Histone H3 Lysine 27</td><td>Polycomb-mediated silencing</td></tr>
+        <tr><td>H3K9me3</td><td>Histone H3 Lysine 9</td><td>Heterochromatin / silencing</td></tr>
+        <tr><td>H3K27ac</td><td>Histone H3 Lysine 27</td><td>Active enhancer mark</td></tr>
+        <tr><td>H3/H4 acetylation</td><td>Various lysines</td><td>Opens chromatin (HATs add; HDACs remove)</td></tr>
+      </table>
+      <div class="kp"><div class="tag">Key Concept</div>The <strong>histone code hypothesis</strong>: specific combinations of histone modifications are read by effector proteins to determine transcriptional state. Writers (add marks), readers (recognize marks), and erasers (remove marks) form the regulatory machinery.</div>
+    </div>
+
+    <div class="card">
+      <h3>DNA Methylation</h3>
+      <p>Addition of a methyl group to the 5-carbon of cytosine, primarily at <strong>CpG dinucleotides</strong>. Catalyzed by <strong>DNA methyltransferases (DNMTs)</strong>: DNMT1 maintains methylation after replication; DNMT3a/3b establish new methylation patterns.</p>
+      <p>Methylation at promoter CpG islands generally <strong>silences</strong> transcription by blocking transcription factor binding and recruiting methyl-CpG binding proteins (MeCP2) that attract HDACs.</p>
+      <div class="ex"><div class="tag">Clinical Connection</div>Rett syndrome results from mutations in <em>MECP2</em>, which reads DNA methylation marks. Aberrant DNA methylation is a hallmark of cancer (global hypomethylation + promoter hypermethylation of tumor suppressors).</div>
+    </div>
+
+    <div class="card">
+      <h3>Genomic Imprinting</h3>
+      <p>Parent-of-origin-specific gene expression: one allele is epigenetically silenced by DNA methylation established in the germline. Only the maternal or paternal allele is expressed.</p>
+      <p><strong>Imprinting control regions (ICRs)</strong> are differentially methylated. Imprinting is reset each generation in the germline.</p>
+      <div class="ex"><div class="tag">Examples</div><strong>Prader-Willi syndrome</strong>: loss of paternal expression at 15q11-13. <strong>Angelman syndrome</strong>: loss of maternal <em>UBE3A</em> expression at the same region. Same chromosomal deletion, different syndrome depending on parent of origin.</div>
+    </div>
+
+    <div class="card">
+      <h3>X-Inactivation in Depth</h3>
+      <p>In female mammals, one X is silenced by the long non-coding RNA <strong>XIST</strong>, which coats the future inactive X and recruits Polycomb complexes (PRC2) that lay down H3K27me3, leading to heterochromatinization and DNA methylation.</p>
+      <p>Inactivation is random in each cell and clonally maintained, producing <strong>mosaic</strong> expression. Some genes <strong>escape</strong> X-inactivation (~15-25% in humans), which contributes to sex differences in disease.</p>
+    </div>
+  </div>
+
+  <!-- ===== S2: GENOMIC ARCHITECTURE ===== -->
+  <div class="section" id="s2">
+    <div class="stag">Section 02</div>
+    <div class="stitle">Genomic Architecture</div>
+    <p class="ssub">How genomes are organized beyond the gene level.</p>
+
+    <div class="card">
+      <h3>Human Genome Composition</h3>
+      <p>~3.2 billion bp; only ~1.5% codes for protein (~20,000-25,000 genes). The rest:</p>
+      <table class="tbl">
+        <tr><th>Component</th><th>~%</th><th>Description</th></tr>
+        <tr><td>Introns</td><td>25%</td><td>Non-coding sequences within genes, removed by splicing</td></tr>
+        <tr><td>Intergenic DNA</td><td>~25%</td><td>Regulatory elements, structural, unknown function</td></tr>
+        <tr><td>SINEs (e.g., Alu)</td><td>13%</td><td>Short retrotransposons (~300 bp); ~1.1 million copies</td></tr>
+        <tr><td>LINEs (e.g., LINE-1)</td><td>20%</td><td>Long retrotransposons (~6 kb); ~500,000 copies</td></tr>
+        <tr><td>LTR retrotransposons</td><td>8%</td><td>Endogenous retroviral elements</td></tr>
+        <tr><td>DNA transposons</td><td>3%</td><td>Cut-and-paste elements (mostly inactive)</td></tr>
+        <tr><td>Simple repeats/satellites</td><td>3%</td><td>Tandem repeats, microsatellites (STRs)</td></tr>
+      </table>
+      <div class="kp"><div class="tag">Key Insight</div>Over 45% of the human genome derives from transposable elements. Most are inactive fossils, but some LINE-1 elements remain active and contribute to somatic mosaicism and disease.</div>
+    </div>
+
+    <div class="card">
+      <h3>Gene Families &amp; Genome Duplication</h3>
+      <p><strong>Gene duplication</strong> (tandem, segmental, or whole-genome) is a major source of evolutionary novelty. Duplicated genes can diverge:</p>
+      <p style="margin-left:1rem"><strong>Neofunctionalization</strong>: one copy acquires a new function.<br>
+      <strong>Subfunctionalization</strong>: each copy retains part of the original function.<br>
+      <strong>Pseudogenization</strong>: one copy accumulates mutations and becomes a pseudogene.</p>
+      <div class="ex"><div class="tag">Example</div>The globin gene family (α-globin cluster on chr 16, β-globin cluster on chr 11) arose from ancient gene duplications. Different family members are expressed at different developmental stages (embryonic → fetal → adult hemoglobin switching).</div>
+    </div>
+
+    <div class="card">
+      <h3>Non-Coding RNAs</h3>
+      <p>The genome produces a vast repertoire of functional non-coding RNAs:</p>
+      <table class="tbl">
+        <tr><th>Type</th><th>Size</th><th>Function</th></tr>
+        <tr><td>miRNA</td><td>~22 nt</td><td>Post-transcriptional silencing; binds 3' UTR of target mRNAs → degradation or translational repression</td></tr>
+        <tr><td>siRNA</td><td>~21 nt</td><td>Gene silencing via RISC complex; used in RNAi experiments</td></tr>
+        <tr><td>lncRNA</td><td>>200 nt</td><td>Diverse: chromatin remodeling (XIST), scaffolding, enhancer function, splicing regulation</td></tr>
+        <tr><td>piRNA</td><td>24-31 nt</td><td>Transposon silencing in germline</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== S3: ADVANCED REGULATION ===== -->
+  <div class="section" id="s3">
+    <div class="stag">Section 03</div>
+    <div class="stitle">Advanced Gene Regulation</div>
+    <p class="ssub">Eukaryotic regulatory logic, enhancers, chromatin looping, and RNA-level control.</p>
+
+    <div class="card">
+      <h3>Enhancers &amp; Chromatin Looping</h3>
+      <p><strong>Enhancers</strong> are cis-regulatory elements that can activate transcription from thousands of base pairs away (or even on different chromosomes in rare cases). They work by <strong>chromatin looping</strong>: the enhancer physically contacts the promoter through 3D genome folding, mediated by proteins like <strong>cohesin</strong> and <strong>CTCF</strong> (which defines the boundaries of <strong>topologically associating domains, TADs</strong>).</p>
+      <p>Active enhancers are marked by <span class="fi">H3K27ac</span> and <span class="fi">H3K4me1</span>. They are bound by transcription factors and the <strong>Mediator complex</strong>, which bridges enhancers to the general transcription machinery at promoters.</p>
+      <div class="warn"><div class="tag">Disease Relevance</div>Disruption of TAD boundaries by structural variants can cause enhancer-gene mis-wiring, leading to developmental disorders and cancer. Many GWAS hits fall in enhancer regions, not protein-coding genes.</div>
+    </div>
+
+    <div class="card">
+      <h3>Post-Transcriptional Regulation</h3>
+      <p><strong>mRNA stability</strong>: AU-rich elements (AREs) in the 3' UTR target mRNAs for rapid degradation. miRNAs bind complementary sequences in the 3' UTR and recruit RISC to silence the message.</p>
+      <p><strong>RNA editing</strong>: ADAR enzymes convert adenosine to inosine (read as guanosine), changing codon meaning post-transcriptionally. APOBEC enzymes convert cytidine to uridine.</p>
+      <p><strong>Nonsense-mediated decay (NMD)</strong>: a quality control mechanism that degrades mRNAs containing premature stop codons, preventing production of truncated proteins.</p>
+    </div>
+
+    <div class="card">
+      <h3>Signal Transduction &amp; Transcription Factor Cascades</h3>
+      <p>Extracellular signals ultimately regulate gene expression by activating transcription factors:</p>
+      <p style="margin-left:1rem"><strong>RTK/Ras/MAPK pathway</strong>: growth factor → receptor tyrosine kinase → Ras → Raf → MEK → ERK → transcription factor phosphorylation. Mutations in Ras are found in ~30% of cancers.<br>
+      <strong>Wnt/β-catenin pathway</strong>: Wnt signal stabilizes β-catenin, which enters nucleus and activates TCF/LEF target genes. APC mutations (loss of β-catenin degradation) drive colorectal cancer.<br>
+      <strong>p53 pathway</strong>: DNA damage activates ATM/ATR kinases → p53 stabilized → activates cell cycle arrest (p21), DNA repair, or apoptosis genes. p53 is mutated in >50% of cancers.</p>
+    </div>
+  </div>
+
+  <!-- ===== S4: QUANTITATIVE GENETICS ===== -->
+  <div class="section" id="s4">
+    <div class="stag">Section 04</div>
+    <div class="stitle">Quantitative Genetics</div>
+    <p class="ssub">The genetics of continuous traits: variance partitioning, heritability, and the breeder's equation.</p>
+
+    <div class="card">
+      <h3>Variance Components</h3>
+      <p>For a quantitative trait, total phenotypic variance is partitioned:</p>
+      <p style="text-align:center;margin:0.4rem 0"><span class="fi">V<sub>P</sub> = V<sub>G</sub> + V<sub>E</sub> + V<sub>GxE</sub></span></p>
+      <p>Genetic variance can be further split: <span class="fi">V<sub>G</sub> = V<sub>A</sub> + V<sub>D</sub> + V<sub>I</sub></span></p>
+      <p style="margin-left:1rem"><strong>V<sub>A</sub></strong> (additive): due to the average effects of alleles; the only component that responds to selection and is transmitted parent→offspring.<br>
+      <strong>V<sub>D</sub></strong> (dominance): due to interactions between alleles at the same locus.<br>
+      <strong>V<sub>I</sub></strong> (epistatic/interaction): due to interactions between alleles at different loci.</p>
+    </div>
+
+    <div class="card">
+      <h3>Heritability</h3>
+      <p><strong>Broad-sense heritability</strong>: <span class="fi">H² = V<sub>G</sub> / V<sub>P</sub></span> (total genetic contribution).</p>
+      <p><strong>Narrow-sense heritability</strong>: <span class="fi">h² = V<sub>A</sub> / V<sub>P</sub></span> (additive genetic contribution). This is what matters for predicting response to selection.</p>
+      <p>Estimated by <strong>parent-offspring regression</strong> (slope = h²), <strong>twin studies</strong> (comparing MZ vs. DZ twins), or <strong>ANOVA</strong> among families.</p>
+      <div class="warn"><div class="tag">Common Misconception</div>Heritability is a <em>population-level</em> statistic, not a measure of how much of an <em>individual's</em> phenotype is genetic. A heritability of 0.8 does NOT mean 80% of your height is genetic. It means 80% of the <em>variation in height within this population</em> is attributable to genetic differences.</div>
+    </div>
+
+    <div class="card">
+      <h3>The Breeder's Equation</h3>
+      <p style="text-align:center;margin:0.4rem 0"><span class="fi">R = h² × S</span></p>
+      <p><strong>R</strong> = response to selection (change in mean of next generation). <strong>S</strong> = selection differential (difference between mean of selected parents and population mean). <strong>h²</strong> = narrow-sense heritability.</p>
+      <div class="ex"><div class="tag">Example</div>A population of cattle has mean milk yield = 6,000 kg. You select cows averaging 7,500 kg to breed. S = 1,500 kg. If h² = 0.3, then R = 0.3 × 1,500 = <strong>450 kg</strong>. The next generation's mean should be ~6,450 kg.</div>
+    </div>
+
+    <div class="card">
+      <h3>QTL Mapping &amp; GWAS</h3>
+      <p><strong>Quantitative Trait Loci (QTL)</strong>: genomic regions associated with variation in a quantitative trait. Identified by crossing divergent strains and correlating genotype with phenotype across markers.</p>
+      <p><strong>Genome-Wide Association Studies (GWAS)</strong>: scan hundreds of thousands of SNPs across a population to find loci statistically associated with a trait or disease. Most GWAS hits have small effect sizes and fall in non-coding regulatory regions.</p>
+    </div>
+  </div>
+
+  <!-- ===== S5: ADVANCED MOLECULAR ===== -->
+  <div class="section" id="s5">
+    <div class="stag">Section 05</div>
+    <div class="stitle">Advanced Molecular Mechanisms</div>
+    <p class="ssub">Replication stress, recombination pathways, and RNA processing complexity.</p>
+
+    <div class="card">
+      <h3>Homologous Recombination vs. NHEJ</h3>
+      <p>Double-strand breaks (DSBs) are repaired by two main pathways:</p>
+      <table class="tbl">
+        <tr><th>Feature</th><th>Homologous Recombination (HR)</th><th>Non-Homologous End Joining (NHEJ)</th></tr>
+        <tr><td>Template</td><td>Uses sister chromatid as template (high fidelity)</td><td>No template; joins broken ends directly</td></tr>
+        <tr><td>Cell cycle</td><td>S/G2 phase (sister chromatid available)</td><td>Any phase</td></tr>
+        <tr><td>Accuracy</td><td>Error-free</td><td>Error-prone (can introduce indels)</td></tr>
+        <tr><td>Key proteins</td><td>BRCA1, BRCA2, RAD51</td><td>Ku70/Ku80, DNA-PKcs, Ligase IV</td></tr>
+        <tr><td>Disease link</td><td>BRCA1/2 mutations → breast/ovarian cancer</td><td>Defects → immunodeficiency (V(D)J recombination uses NHEJ)</td></tr>
+      </table>
+      <div class="kp"><div class="tag">CRISPR Connection</div>CRISPR-Cas9 makes a DSB. If the cell repairs by NHEJ → indels → gene knockout. If a donor template is provided and HR occurs → precise gene editing (knock-in).</div>
+    </div>
+
+    <div class="card">
+      <h3>Telomere Biology</h3>
+      <p>Human telomeres consist of thousands of <span class="fi">TTAGGG</span> repeats. With each round of replication, the lagging strand loses ~50-200 bp (the <strong>end-replication problem</strong>) because RNA primers at the very end cannot be replaced.</p>
+      <p><strong>Telomerase</strong> (a reverse transcriptase with an RNA template component, TERC) extends the 3' overhang. Active in germ cells, stem cells, and ~90% of cancers (enabling unlimited division). Somatic cells lack telomerase; telomere shortening acts as a mitotic clock triggering <strong>replicative senescence</strong>.</p>
+      <p><strong>Shelterin complex</strong> (TRF1, TRF2, POT1, etc.) caps telomeres and prevents them from being recognized as DSBs.</p>
+    </div>
+
+    <div class="card">
+      <h3>RNA Splicing Mechanisms</h3>
+      <p>The <strong>spliceosome</strong> is composed of five snRNPs (U1, U2, U4, U5, U6) plus many protein factors. Splicing proceeds via two transesterification reactions, generating a <strong>lariat intermediate</strong>.</p>
+      <p><strong>Splice site mutations</strong> at the conserved GT (5' donor) or AG (3' acceptor) dinucleotides cause exon skipping or intron retention, often leading to disease.</p>
+      <p><strong>Self-splicing introns</strong>: Group I (uses external G nucleotide) and Group II (uses internal adenosine, lariat intermediate; evolutionary ancestor of the spliceosome).</p>
+    </div>
+  </div>
+
+  <!-- ===== S6: TRANSPOSONS ===== -->
+  <div class="section" id="s6">
+    <div class="stag">Section 06</div>
+    <div class="stitle">Transposable Elements &amp; Genome Evolution</div>
+    <p class="ssub">Jumping genes as architects of genome structure and drivers of evolution.</p>
+
+    <div class="card">
+      <h3>Mechanisms of Transposition</h3>
+      <p><strong>DNA transposons</strong> (Class II): "cut-and-paste" via transposase. Flanked by terminal inverted repeats (TIRs). Create target site duplications (TSDs) upon insertion. Mostly inactive in humans.</p>
+      <p><strong>Retrotransposons</strong> (Class I): "copy-and-paste" via an RNA intermediate. Two subtypes:</p>
+      <p style="margin-left:1rem"><strong>LTR retrotransposons</strong>: resemble retroviruses (gag, pol genes flanked by long terminal repeats). Use reverse transcriptase and integrase.<br>
+      <strong>Non-LTR retrotransposons</strong>: LINEs encode their own reverse transcriptase and endonuclease. SINEs (like Alu) are non-autonomous and hijack LINE machinery for retrotransposition.</p>
+      <div class="ex"><div class="tag">Active in Humans</div>LINE-1 (L1) remains retrotranspositionally active, causing ~1 in 250 disease-causing mutations. Alu elements (SINEs) continue to retrotranspose at a lower rate. New insertions cause hemophilia A, neurofibromatosis, and other disorders.</div>
+    </div>
+
+    <div class="card">
+      <h3>Evolutionary Impact of TEs</h3>
+      <p>Transposable elements are not just "junk": they have been <strong>co-opted</strong> (exapted/domesticated) for host functions throughout evolution.</p>
+      <p style="margin-left:1rem"><strong>Gene regulation</strong>: TE-derived sequences serve as enhancers, promoters, and insulators. ~25% of human promoter regions contain TE-derived sequences.<br>
+      <strong>New genes</strong>: RAG1/RAG2 recombinase (essential for V(D)J recombination in adaptive immunity) evolved from a DNA transposon. Syncytin (essential for placental formation) derived from an endogenous retroviral envelope gene.<br>
+      <strong>Genome restructuring</strong>: ectopic recombination between dispersed repeats causes deletions, duplications, inversions, and translocations.</p>
+    </div>
+  </div>
+
+  <!-- ===== S7: CANCER GENETICS ===== -->
+  <div class="section" id="s7">
+    <div class="stag">Section 07</div>
+    <div class="stitle">Cancer Genetics</div>
+    <p class="ssub">The multi-hit model, oncogenes, tumor suppressors, and genomic instability.</p>
+
+    <div class="card">
+      <h3>Oncogenes &amp; Tumor Suppressors</h3>
+      <table class="tbl">
+        <tr><th></th><th>Proto-oncogenes → Oncogenes</th><th>Tumor Suppressors</th></tr>
+        <tr><td>Normal function</td><td>Promote cell growth/division</td><td>Inhibit growth, promote apoptosis or repair</td></tr>
+        <tr><td>Mutation type</td><td><strong>Gain-of-function</strong> (dominant)</td><td><strong>Loss-of-function</strong> (recessive at cell level)</td></tr>
+        <tr><td>Copies needed</td><td>One mutant allele sufficient</td><td>Both alleles must be inactivated (<strong>Knudson's two-hit</strong>)</td></tr>
+        <tr><td>Examples</td><td>RAS, MYC, HER2, BCR-ABL</td><td>TP53, RB, APC, BRCA1/2</td></tr>
+        <tr><td>Activation</td><td>Point mutation, amplification, translocation</td><td>Deletion, nonsense mutation, promoter methylation, LOH</td></tr>
+      </table>
+      <div class="kp"><div class="tag">Knudson's Two-Hit Hypothesis</div>Familial retinoblastoma: inherit one mutant <em>RB</em> allele (first hit), then lose the second copy somatically (second hit = LOH). Sporadic cases require both hits in the same somatic cell, explaining later onset and unilateral disease.</div>
+    </div>
+
+    <div class="card">
+      <h3>Hallmarks of Cancer &amp; Genomic Instability</h3>
+      <p>Cancer cells acquire capabilities including: sustained proliferative signaling, evasion of growth suppressors, resistance to apoptosis, replicative immortality (telomerase reactivation), angiogenesis, invasion/metastasis, metabolic reprogramming, and immune evasion.</p>
+      <p><strong>Genomic instability</strong> accelerates these: microsatellite instability (MSI, from mismatch repair defects, e.g., Lynch syndrome), chromosomal instability (CIN, aneuploidy), and <strong>chromothripsis</strong> (catastrophic shattering and reassembly of a chromosome).</p>
+    </div>
+  </div>
+
+  <!-- ===== S8: POP/EVO GENOMICS ===== -->
+  <div class="section" id="s8">
+    <div class="stag">Section 08</div>
+    <div class="stitle">Population &amp; Evolutionary Genomics</div>
+    <p class="ssub">Molecular evolution, selection signatures, and coalescent theory basics.</p>
+
+    <div class="card">
+      <h3>Molecular Evolution &amp; Neutral Theory</h3>
+      <p><strong>Kimura's Neutral Theory</strong>: most molecular evolution is driven by <strong>genetic drift</strong> of selectively neutral mutations, not positive selection. The rate of neutral substitution equals the mutation rate (μ), independent of population size.</p>
+      <p><strong>Molecular clock</strong>: if mutations accumulate at a roughly constant rate, sequence divergence between species estimates time since their last common ancestor. Calibrated using fossil dates.</p>
+      <p><strong>Ka/Ks ratio (dN/dS)</strong>: the ratio of non-synonymous (Ka) to synonymous (Ks) substitutions. Ka/Ks < 1 = purifying selection; Ka/Ks = 1 = neutral evolution; Ka/Ks > 1 = positive selection.</p>
+    </div>
+
+    <div class="card">
+      <h3>Detecting Selection in Genomes</h3>
+      <p style="margin-left:1rem"><strong>Selective sweep</strong>: positive selection on an allele also carries nearby linked variants to high frequency, reducing local diversity. Detected by long haplotype homozygosity (EHH), high Fst, reduced heterozygosity.<br>
+      <strong>Balancing selection</strong>: maintains multiple alleles, increasing heterozygosity. Example: MHC/HLA locus has extreme polymorphism maintained by pathogen-mediated selection.<br>
+      <strong>Background selection</strong>: purifying selection against deleterious alleles reduces linked neutral diversity (similar pattern to sweeps but driven by negative selection).</p>
+    </div>
+
+    <div class="card">
+      <h3>Coalescent Theory (Basics)</h3>
+      <p>Instead of thinking forward in time (population growth/drift), coalescent theory traces alleles <strong>backward</strong> to their most recent common ancestor (MRCA). In a diploid population of size N, the expected time for two alleles to coalesce is <span class="fi">2N generations</span>.</p>
+      <p>This framework is the foundation of modern population genetics inference: estimating population size history, migration rates, and divergence times from DNA sequence data.</p>
+    </div>
+  </div>
+
+  <!-- ===== S9: ADVANCED BIOTECH ===== -->
+  <div class="section" id="s9">
+    <div class="stag">Section 09</div>
+    <div class="stitle">Advanced Biotechnology</div>
+    <p class="ssub">Next-gen sequencing, genome editing refinements, and functional genomics.</p>
+
+    <div class="card">
+      <h3>Next-Generation Sequencing (NGS)</h3>
+      <p><strong>Illumina</strong> (sequencing by synthesis): library prep → bridge amplification on flow cell → reversible terminator chemistry → massively parallel short reads (150-300 bp). Dominant platform for most applications.</p>
+      <p><strong>Long-read</strong>: PacBio (SMRT, single molecule) and Oxford Nanopore produce reads >10 kb, enabling resolution of structural variants, repetitive regions, and phasing of haplotypes. Higher error rate, corrected by depth or hybrid approaches.</p>
+      <p><strong>Applications</strong>: whole genome sequencing, RNA-seq (transcriptome), ChIP-seq (protein-DNA interactions), ATAC-seq (open chromatin), bisulfite-seq (DNA methylation), single-cell sequencing.</p>
+    </div>
+
+    <div class="card">
+      <h3>Beyond CRISPR-Cas9</h3>
+      <p><strong>Base editors</strong>: fuse catalytically dead Cas9 (dCas9) with a deaminase to convert C→T or A→G without making a DSB. No donor template needed.</p>
+      <p><strong>Prime editing</strong>: fuse Cas9 nickase with reverse transcriptase plus a prime editing guide RNA (pegRNA) that encodes the desired edit. Can make any small edit (substitutions, insertions, deletions) without DSBs or donor DNA.</p>
+      <p><strong>CRISPRi/CRISPRa</strong>: dCas9 fused to repressor (KRAB) or activator (VP64) domains for gene silencing or activation without cutting DNA.</p>
+      <div class="kp"><div class="tag">Advantage</div>Base editing and prime editing avoid the error-prone DSB repair step, reducing unwanted indels and off-target effects compared to standard Cas9.</div>
+    </div>
+
+    <div class="card">
+      <h3>Functional Genomics Approaches</h3>
+      <p><strong>CRISPR screens</strong>: genome-wide libraries of guide RNAs are used to knock out every gene individually, then screen for phenotypes (e.g., drug resistance). Identifies essential genes and drug targets.</p>
+      <p><strong>RNA-seq / scRNA-seq</strong>: measures gene expression across the whole transcriptome. Single-cell RNA-seq reveals cell-type heterogeneity within tissues.</p>
+      <p><strong>Hi-C</strong>: captures 3D genome organization (chromosome conformation capture). Reveals TADs, compartments (A/B), and long-range chromatin interactions.</p>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="section" id="quiz">
+    <div class="stag">Test Yourself</div>
+    <div class="stitle">Multiple Choice Quiz</div>
+    <p class="ssub">20 advanced questions. Select the best answer, then check your score.</p>
+    <div id="quiz-box"></div>
+    <div class="qc">
+      <button class="btn bp" onclick="checkQ()">Check My Answers</button>
+      <button class="btn bs" onclick="resetQ()">Reset</button>
+    </div>
+    <div class="qsc" id="qsc"><div class="big" id="sn"></div><div class="sm" id="sm"></div></div>
+  </div>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <div class="section" id="fc">
+    <div class="stag">Review</div>
+    <div class="stitle">Flashcards</div>
+    <p class="ssub">Click to flip. Filter by topic.</p>
+    <div class="fcf" id="fcf"></div>
+    <div class="fc-grid" id="fcc"></div>
+  </div>
+
+  <!-- ===== SHORT ANSWER ===== -->
+  <div class="section" id="sa">
+    <div class="stag">Deep Practice</div>
+    <div class="stitle">Short Answer (Auto-Graded)</div>
+    <p class="ssub">Write a thorough answer, then click "Grade." The grader checks for key concepts using weighted keyword and phrase matching with synonym recognition. Include specific terms for the best score.</p>
+    <div id="sa-box"></div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:1.5rem;font-style:italic">Grading uses embedded concept matching with synonyms and partial credit. No API calls are made. For the most accurate score, use specific terminology.</p>
+  </div>
+
+  <div class="footer">Advanced Genetics &mdash; Study Reference</div>
+</div>
+
+<script>
+// ===== QUIZ =====
+const QD=[
+{q:"H3K27me3 is associated with:",o:["Active transcription at promoters","Polycomb-mediated gene silencing","Active enhancer elements","DNA replication origins"],a:1,e:"H3K27me3 is deposited by the Polycomb Repressive Complex 2 (PRC2) and is a hallmark of transcriptional silencing, particularly at developmentally regulated genes."},
+{q:"Which enzyme maintains DNA methylation patterns after replication?",o:["DNMT3a","DNMT3b","DNMT1","TET1"],a:2,e:"DNMT1 is the 'maintenance methyltransferase' that recognizes hemi-methylated CpG sites at the replication fork and methylates the newly synthesized strand."},
+{q:"Prader-Willi and Angelman syndromes both involve deletions at 15q11-13 but differ because of:",o:["X-linkage","Mitochondrial inheritance","Genomic imprinting (parent-of-origin effects)","Trinucleotide repeat expansion"],a:2,e:"These syndromes are imprinting disorders: Prader-Willi results from loss of paternally expressed genes, while Angelman results from loss of maternally expressed UBE3A, at the same chromosomal region."},
+{q:"XIST silences the inactive X chromosome primarily by recruiting:",o:["DNA methyltransferases directly","Polycomb Repressive Complex 2 (PRC2)","RNA Polymerase III","Telomerase"],a:1,e:"XIST RNA coats the future inactive X and recruits PRC2, which deposits H3K27me3, leading to heterochromatinization and stable silencing."},
+{q:"What percentage of the human genome is derived from transposable elements?",o:["~5%","~15%","~25%","~45%"],a:3,e:"Over 45% of the human genome consists of transposable element-derived sequences, including LINEs, SINEs, LTR retrotransposons, and DNA transposons."},
+{q:"A duplicated gene that acquires a new function is an example of:",o:["Pseudogenization","Subfunctionalization","Neofunctionalization","Genomic imprinting"],a:2,e:"Neofunctionalization occurs when one copy of a duplicated gene evolves a new function while the other retains the original function."},
+{q:"In the breeder's equation R = h²S, h² represents:",o:["Broad-sense heritability","Narrow-sense heritability","The selection coefficient","Fitness"],a:1,e:"The breeder's equation uses narrow-sense heritability (h² = V_A / V_P), which measures the proportion of phenotypic variance due to additive genetic effects, the component that responds to selection."},
+{q:"A Ka/Ks ratio greater than 1 indicates:",o:["Purifying selection","Neutral evolution","Positive (adaptive) selection","Genetic drift"],a:2,e:"Ka/Ks > 1 means non-synonymous substitutions are accumulating faster than synonymous ones, indicating positive selection driving amino acid changes."},
+{q:"Which DSB repair pathway requires a sister chromatid template and is error-free?",o:["NHEJ","Base excision repair","Homologous recombination","Mismatch repair"],a:2,e:"Homologous recombination (HR) uses the sister chromatid as a template for high-fidelity repair. It operates primarily in S/G2 phase when the sister chromatid is available."},
+{q:"BRCA1 and BRCA2 mutations predispose to cancer because they impair:",o:["Mismatch repair","Nucleotide excision repair","Homologous recombination","NHEJ"],a:2,e:"BRCA1/2 are essential for homologous recombination. When HR is defective, cells rely on error-prone NHEJ, accumulating mutations that drive cancer development."},
+{q:"Knudson's two-hit hypothesis best explains the genetics of:",o:["Oncogene activation","Tumor suppressor inactivation","Gain-of-function mutations","Haploinsufficiency"],a:1,e:"Knudson's model explains that both alleles of a tumor suppressor must be inactivated (two hits) for loss of function. In familial cases, one hit is inherited and the second is somatic."},
+{q:"Chromothripsis refers to:",o:["Gradual accumulation of point mutations","Catastrophic shattering and reassembly of a chromosome","Loss of telomere function","DNA methylation changes"],a:1,e:"Chromothripsis is a single catastrophic event where a chromosome shatters into many fragments that are randomly reassembled, causing massive rearrangements in a single cell cycle."},
+{q:"In coalescent theory, the expected coalescence time for two alleles in a diploid population of size N is:",o:["N generations","2N generations","4N generations","N/2 generations"],a:1,e:"In a diploid population, the expected time for two randomly sampled alleles to find their most recent common ancestor is 2N generations."},
+{q:"Which technology produces long reads (>10 kb) useful for resolving structural variants?",o:["Illumina sequencing","Sanger sequencing","PacBio / Oxford Nanopore","Microarrays"],a:2,e:"PacBio (SMRT) and Oxford Nanopore produce long reads (often >10 kb, sometimes >100 kb), enabling resolution of structural variants, repetitive regions, and haplotype phasing."},
+{q:"Prime editing differs from standard CRISPR-Cas9 because it:",o:["Makes a double-strand break","Uses a deaminase enzyme","Uses a Cas9 nickase fused to reverse transcriptase with a pegRNA","Requires a homology donor template"],a:2,e:"Prime editing uses a Cas9 nickase (cuts one strand) fused to reverse transcriptase, guided by a pegRNA that encodes the desired edit. This avoids DSBs and doesn't need a separate donor template."},
+{q:"CRISPRi achieves gene silencing by:",o:["Cutting the gene with Cas9","Fusing dCas9 to the KRAB repressor domain","Inserting a stop codon","Methylating the promoter"],a:1,e:"CRISPRi uses catalytically dead Cas9 (dCas9) fused to the KRAB repressor domain. Guided to a promoter, it blocks transcription without altering the DNA sequence."},
+{q:"A selective sweep is detected by:",o:["High genetic diversity at the locus","Reduced local diversity and extended haplotype homozygosity","Increased Ka/Ks ratio genome-wide","High recombination frequency"],a:1,e:"A selective sweep occurs when positive selection drives an allele to fixation, carrying linked variants along and reducing local diversity. This creates extended haplotype homozygosity (EHH)."},
+{q:"Which of the following is an active enhancer mark?",o:["H3K27me3","H3K9me3","H3K27ac","H3K9ac at promoters only"],a:2,e:"H3K27ac is the hallmark of active enhancers (and active promoters). It is deposited by histone acetyltransferases and is associated with open, transcriptionally active chromatin."},
+{q:"Nonsense-mediated decay (NMD) degrades mRNAs that contain:",o:["Long poly-A tails","Premature termination codons","AU-rich elements in the 5' UTR","Self-splicing introns"],a:1,e:"NMD is a quality control mechanism that detects and degrades mRNAs containing premature stop codons, preventing production of potentially harmful truncated proteins."},
+{q:"The RAG1/RAG2 recombinase, essential for V(D)J recombination in adaptive immunity, evolved from:",o:["A retrovirus","A DNA transposon","A LINE element","A mitochondrial gene"],a:1,e:"RAG1/RAG2 are domesticated transposases. They evolved from an ancient DNA transposon and were co-opted to mediate the somatic recombination that generates antibody and T-cell receptor diversity."}
+];
+
+function buildQ(){const c=document.getElementById('quiz-box');c.innerHTML='';QD.forEach((q,i)=>{const d=document.createElement('div');d.className='qq';d.innerHTML=`<div class="qn">Question ${i+1}</div><p class="qt">${q.q}</p><ul class="qo">${q.o.map((o,j)=>`<li><label id="l${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="qfb" id="f${i}"></div>`;c.appendChild(d)})}
+function checkQ(){let s=0;QD.forEach((q,i)=>{const sel=document.querySelector(`input[name="q${i}"]:checked`);const fb=document.getElementById('f'+i);q.o.forEach((_,j)=>document.getElementById(`l${i}-${j}`).className='');if(sel){const v=+sel.value;if(v===q.a){s++;document.getElementById(`l${i}-${v}`).className='ok';fb.className='qfb show y';fb.textContent='✓ '+q.e}else{document.getElementById(`l${i}-${v}`).className='no';document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='✗ '+q.e}}else{document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='Not answered. '+q.e}});const sc=document.getElementById('qsc');const p=Math.round(s/QD.length*100);document.getElementById('sn').textContent=s+' / '+QD.length;document.getElementById('sm').textContent=p+'% — '+(p>=90?'Outstanding!':p>=75?'Solid work!':p>=55?'Good start. Review the concepts above.':'This material is dense. Re-read the sections and try again.');sc.style.display='block';sc.scrollIntoView({behavior:'smooth',block:'center'})}
+function resetQ(){QD.forEach((q,i)=>{document.querySelectorAll(`input[name="q${i}"]`).forEach(r=>r.checked=false);q.o.forEach((_,j)=>document.getElementById(`l${i}-${j}`).className='');document.getElementById('f'+i).className='qfb'});document.getElementById('qsc').style.display='none';document.getElementById('quiz-box').scrollIntoView({behavior:'smooth'})}
+
+// ===== FLASHCARDS =====
+const FD=[
+{f:"What is the histone code hypothesis?",b:"Specific combinations of histone modifications (acetylation, methylation, phosphorylation) are read by effector proteins (readers) to determine transcriptional state. Writers add marks, erasers remove them.",c:"Epigenetics"},
+{f:"H3K4me3 vs. H3K27me3?",b:"H3K4me3 = active promoter mark. H3K27me3 = Polycomb-mediated silencing mark. These are mutually exclusive states at most promoters.",c:"Epigenetics"},
+{f:"What does DNMT1 do?",b:"Maintenance DNA methyltransferase. Recognizes hemi-methylated CpG sites after replication and methylates the new strand to preserve the methylation pattern.",c:"Epigenetics"},
+{f:"How does XIST silence a chromosome?",b:"XIST lncRNA coats the future inactive X and recruits PRC2, which deposits H3K27me3, leading to heterochromatin formation and gene silencing.",c:"Epigenetics"},
+{f:"Explain genomic imprinting.",b:"Parent-of-origin gene expression: one allele silenced by germline DNA methylation at imprinting control regions. Reset each generation. Example: Prader-Willi (paternal) vs. Angelman (maternal) at 15q11-13.",c:"Epigenetics"},
+{f:"What are SINEs and LINEs?",b:"SINEs (e.g., Alu, ~300 bp) and LINEs (e.g., LINE-1, ~6 kb) are retrotransposons. LINEs encode reverse transcriptase; SINEs are non-autonomous and depend on LINE machinery. Together ~33% of the human genome.",c:"Genome"},
+{f:"Neofunctionalization vs. subfunctionalization?",b:"After gene duplication: neofunctionalization = one copy gains a new function. Subfunctionalization = each copy retains part of the original function.",c:"Genome"},
+{f:"What are the four types of non-coding RNA?",b:"miRNA (~22 nt, post-transcriptional silencing), siRNA (~21 nt, RNAi), lncRNA (>200 nt, diverse regulatory roles like XIST), piRNA (24-31 nt, transposon silencing in germline).",c:"Genome"},
+{f:"How do enhancers work over long distances?",b:"Through chromatin looping: the enhancer physically contacts the promoter in 3D space, mediated by cohesin and CTCF at TAD boundaries. Active enhancers are marked by H3K27ac and H3K4me1.",c:"Regulation"},
+{f:"What is nonsense-mediated decay?",b:"A quality control pathway that degrades mRNAs with premature stop codons, preventing production of truncated proteins. Recognizes PTCs via exon junction complexes.",c:"Regulation"},
+{f:"V_P = V_G + V_E. Break down V_G.",b:"V_G = V_A (additive: average allele effects, responds to selection) + V_D (dominance: within-locus interactions) + V_I (epistatic: between-locus interactions).",c:"Quantitative"},
+{f:"What does narrow-sense heritability (h²) measure?",b:"h² = V_A / V_P. The proportion of phenotypic variance due to additive genetic variance. It predicts response to selection. It's a population statistic, not individual.",c:"Quantitative"},
+{f:"State the breeder's equation.",b:"R = h²S. R = response to selection, S = selection differential, h² = narrow-sense heritability.",c:"Quantitative"},
+{f:"HR vs. NHEJ?",b:"HR: uses sister chromatid template, error-free, S/G2 phase, requires BRCA1/2 and RAD51. NHEJ: no template, error-prone (indels), any cell cycle phase, uses Ku70/80 and Ligase IV.",c:"Molecular"},
+{f:"What is the end-replication problem?",b:"DNA polymerase cannot replicate the very end of a linear chromosome (lagging strand). Each division shortens telomeres by ~50-200 bp. Telomerase (reverse transcriptase + RNA template) compensates in germ/stem cells.",c:"Molecular"},
+{f:"How does the spliceosome work?",b:"Five snRNPs (U1, U2, U4, U5, U6) recognize splice sites. Two transesterification reactions produce a lariat intermediate. U1 binds 5' splice site (GT), U2 binds branch point. Conserved GT...AG rule.",c:"Molecular"},
+{f:"Oncogenes vs. tumor suppressors?",b:"Oncogenes: gain-of-function, dominant, one allele sufficient (RAS, MYC). Tumor suppressors: loss-of-function, both alleles inactivated (two-hit, Knudson), recessive at cell level (TP53, RB, APC).",c:"Cancer"},
+{f:"What is Knudson's two-hit hypothesis?",b:"Both alleles of a tumor suppressor must be inactivated. Familial: inherit one hit + somatic second hit (earlier, bilateral). Sporadic: both hits somatic (later, unilateral). Originally described for retinoblastoma (RB).",c:"Cancer"},
+{f:"What is chromothripsis?",b:"A single catastrophic event shattering a chromosome into many fragments that are randomly reassembled, causing massive rearrangements. Found in ~2-3% of cancers and some congenital disorders.",c:"Cancer"},
+{f:"Explain the neutral theory.",b:"Kimura: most molecular evolution results from drift of selectively neutral mutations. Rate of neutral substitution = mutation rate (μ). Forms the basis of the molecular clock.",c:"Evolution"},
+{f:"What does Ka/Ks > 1 mean?",b:"Non-synonymous substitutions exceed synonymous ones → positive (adaptive) selection driving amino acid changes. Ka/Ks < 1 = purifying selection. Ka/Ks ≈ 1 = neutral.",c:"Evolution"},
+{f:"What is a selective sweep?",b:"Positive selection drives a beneficial allele to fixation, dragging linked variants along (hitchhiking). Reduces local diversity, creates extended haplotype homozygosity.",c:"Evolution"},
+{f:"Coalescent theory basics?",b:"Traces alleles backward to their MRCA. Expected coalescence time for 2 alleles in diploid population of size N = 2N generations. Foundation for estimating demographic history from sequence data.",c:"Evolution"},
+{f:"How does prime editing work?",b:"Cas9 nickase + reverse transcriptase + pegRNA. Nicks one strand, RT writes the edit from the pegRNA template. No DSB, no donor template needed. Can make any small substitution, insertion, or deletion.",c:"Biotech"},
+{f:"What is CRISPRi?",b:"CRISPR interference: dCas9 (catalytically dead) fused to KRAB repressor domain. Guided to a promoter, physically blocks transcription without altering DNA sequence. Reversible silencing.",c:"Biotech"},
+{f:"What does Hi-C reveal?",b:"3D genome organization: TADs, A/B compartments, and long-range chromatin interactions. Based on proximity ligation of crosslinked chromatin followed by sequencing.",c:"Biotech"},
+];
+
+let ac='All';
+function gc(){return['All',...new Set(FD.map(f=>f.c))]}
+function bf(){document.getElementById('fcf').innerHTML=gc().map(c=>`<button class="fcb ${c==='All'?'active':''}" onclick="ff('${c}')">${c}</button>`).join('')}
+function ff(c){ac=c;document.querySelectorAll('.fcb').forEach(b=>b.classList.toggle('active',b.textContent===c));bfc()}
+function bfc(){const a=ac==='All'?FD:FD.filter(f=>f.c===ac);document.getElementById('fcc').innerHTML=a.map(f=>`<div class="fc" onclick="this.classList.toggle('fl')"><div class="fci"><div class="fcfr"><div class="t">${f.c}</div><div class="q">${f.f}</div><div class="h">click to flip</div></div><div class="fcbk"><div class="t">Answer</div><div class="a">${f.b}</div></div></div></div>`).join('')}
+
+// ===== SHORT ANSWER GRADING ENGINE =====
+// Each concept has: label (displayed), terms (array of synonyms/phrases to match), weight (importance)
+// The grader: lowercases input, checks each concept for any term match, tallies weighted score, returns feedback with hit/miss breakdown.
+
+const SA=[
+{q:"Explain the histone code hypothesis. Describe at least three specific histone modifications and their functional significance, and explain the roles of writers, readers, and erasers.",
+concepts:[
+{label:"Histone modifications act as signals read by effector proteins",terms:["histone code","combination of modification","pattern of modification","specific modification","mark.*read","signal.*read","effector protein","binding protein","recognition"],w:3},
+{label:"H3K4me3 marks active promoters",terms:["h3k4me3","h3k4 trimethyl","lysine 4.*methyl.*active","k4me3.*active","k4me3.*promot"],w:2},
+{label:"H3K27me3 marks Polycomb-mediated silencing",terms:["h3k27me3","h3k27.*methyl.*silenc","k27me3.*polycomb","polycomb.*k27","k27me3.*repress"],w:2},
+{label:"H3K27ac marks active enhancers",terms:["h3k27ac","h3k27.*acetyl.*enhanc","k27ac.*active","k27ac.*enhanc"],w:2},
+{label:"Acetylation opens chromatin / promotes transcription",terms:["acetyl.*open","acetyl.*loos","acetyl.*active","acetyl.*transcri","hat.*acetyl","histone acetyl.*transcri"],w:2},
+{label:"Writers add modifications (HATs, HMTs, kinases)",terms:["writer.*add","writer.*deposit","hat.*write","hmt.*write","enzyme.*add.*modif","methyltransferase.*add"],w:2},
+{label:"Readers recognize modifications (bromodomains, chromodomains)",terms:["reader.*recogn","reader.*bind","reader.*interpret","bromodomain","chromodomain"],w:2},
+{label:"Erasers remove modifications (HDACs, demethylases)",terms:["eraser.*remov","hdac.*remov","demethylase.*remov","eraser.*strip","enzyme.*remov.*modif"],w:2}
+],
+model:"The histone code hypothesis proposes that specific combinations of covalent histone modifications serve as signals that are interpreted by effector proteins to regulate chromatin state and gene expression. Key modifications include H3K4me3 (active promoters), H3K27me3 (Polycomb-mediated silencing), H3K27ac (active enhancers), and general histone acetylation (opens chromatin, promotes transcription via charge neutralization). The system relies on writers (enzymes that add marks, such as HATs for acetylation and HMTs for methylation), readers (proteins with recognition domains like bromodomains for acetyl marks and chromodomains for methyl marks), and erasers (enzymes that remove marks, such as HDACs and histone demethylases).",
+cat:"Epigenetics"},
+
+{q:"Compare and contrast homologous recombination (HR) and non-homologous end joining (NHEJ) for double-strand break repair. Include when each is used, their accuracy, key proteins involved, and relevance to both cancer and CRISPR technology.",
+concepts:[
+{label:"HR uses sister chromatid as a template",terms:["sister chromatid","homolog.*template","template.*sister","hr.*template","faithful.*template"],w:2},
+{label:"HR is error-free / high fidelity",terms:["hr.*error.free","hr.*fidelit","hr.*accurat","homologous.*error.free","homologous.*fidelit","homologous.*accurat","hr.*faithful"],w:2},
+{label:"HR operates in S/G2 phase",terms:["s phase","g2 phase","s.g2","hr.*s/g2","hr.*s and g2","sister chromatid.*avail"],w:2},
+{label:"NHEJ joins broken ends without a template",terms:["nhej.*no template","nhej.*direct.*join","nhej.*without template","ligate.*directly","end.*joining.*no template"],w:2},
+{label:"NHEJ is error-prone / can introduce indels",terms:["nhej.*error","nhej.*indel","nhej.*inaccurat","nhej.*mutation","error.prone.*nhej","nhej.*insertion.*deletion"],w:2},
+{label:"NHEJ works in any cell cycle phase",terms:["nhej.*any phase","nhej.*all phase","nhej.*g1","nhej.*throughout","any.*cell cycle.*nhej"],w:1},
+{label:"HR key proteins: BRCA1, BRCA2, RAD51",terms:["brca1","brca2","rad51","brca.*hr"],w:2},
+{label:"NHEJ key proteins: Ku70/Ku80, DNA-PKcs, Ligase IV",terms:["ku70","ku80","ku7","dna.pk","ligase iv","ligase 4"],w:1},
+{label:"BRCA mutations impair HR and cause cancer",terms:["brca.*cancer","brca.*breast","brca.*ovarian","brca.*defect.*cancer","brca.*mutation.*cancer","hr.*defect.*cancer"],w:2},
+{label:"CRISPR connection: NHEJ → knockout, HR with template → knock-in",terms:["crispr.*nhej.*knockout","crispr.*hr.*knock.in","crispr.*nhej.*indel","cas9.*nhej","cas9.*hr.*template","donor template.*hr","crispr.*repair pathway"],w:2}
+],
+model:"Homologous recombination (HR) uses the sister chromatid as a template for error-free repair and operates during S/G2 phase when the sister chromatid is available. Key proteins include BRCA1, BRCA2, and RAD51. Non-homologous end joining (NHEJ) directly ligates broken DNA ends without a template, making it available in any cell cycle phase but error-prone (can introduce indels). Key NHEJ proteins include Ku70/Ku80, DNA-PKcs, and Ligase IV. BRCA1/2 mutations impair HR, forcing reliance on error-prone NHEJ and predisposing to breast and ovarian cancer. In CRISPR technology, Cas9-induced DSBs repaired by NHEJ produce indels (gene knockout), while providing a donor template can engage HR for precise knock-in edits.",
+cat:"Molecular"},
+
+{q:"Explain Knudson's two-hit hypothesis using retinoblastoma as your example. Describe how this model applies to tumor suppressor genes in general, and contrast the genetics of familial vs. sporadic cases.",
+concepts:[
+{label:"Both alleles of a tumor suppressor must be inactivated",terms:["both allele","two allele","both cop","two cop","two hit","both hit","biallelic","loss of both"],w:3},
+{label:"Tumor suppressors are recessive at the cellular level",terms:["recessive.*cell","loss of function","recessive.*tumor","cell.*level.*recessive"],w:2},
+{label:"RB gene / retinoblastoma as the classic example",terms:["rb ","rb1","retinoblastoma"],w:2},
+{label:"Familial: first hit inherited, second hit somatic",terms:["inherit.*first","familial.*inherit","germline.*first","born with.*one","first hit.*inherit","inherited.*one.*mutation"],w:3},
+{label:"Familial cases are earlier onset and often bilateral",terms:["earlier onset","bilateral","earlier.*familial","both eyes","bilateral.*familial","young.*age"],w:2},
+{label:"Sporadic: both hits must occur in the same somatic cell",terms:["sporadic.*both.*somatic","sporadic.*two.*somatic","both hit.*same cell","two hit.*somatic","both mutation.*somatic"],w:2},
+{label:"Sporadic cases are later onset and usually unilateral",terms:["later onset","unilateral","later.*sporadic","one eye","sporadic.*older","sporadic.*later"],w:2},
+{label:"LOH (loss of heterozygosity) as mechanism for second hit",terms:["loh","loss of heterozygosity","second hit.*delet","second hit.*recomb","somatic.*loss"],w:2},
+{label:"Applies to other tumor suppressors (TP53, APC, BRCA)",terms:["tp53","p53","apc","brca","other tumor suppress","general.*model"],w:1}
+],
+model:"Knudson's two-hit hypothesis states that both alleles of a tumor suppressor gene must be inactivated for loss of tumor-suppressive function, because these genes are functionally recessive at the cellular level. In retinoblastoma (the RB1 gene), familial cases inherit one mutant allele (first hit) in the germline, requiring only one additional somatic mutation (second hit, often via LOH) to lose RB function. This explains the earlier onset and bilateral presentation. Sporadic cases require both hits to occur independently in the same somatic retinal cell, making this far less likely and explaining the later onset and unilateral presentation. The model generalizes to other tumor suppressors including TP53, APC, and BRCA1/2.",
+cat:"Cancer"},
+
+{q:"Describe narrow-sense heritability (h²). Explain what it measures, how it differs from broad-sense heritability, how it can be estimated, why it is important for predicting response to selection, and describe a common misconception about heritability.",
+concepts:[
+{label:"h² = V_A / V_P (additive variance over phenotypic variance)",terms:["v_a.*v_p","va.*vp","additive.*phenotypic","h2.*additive.*variance","h².*v_a","narrow.*additive"],w:3},
+{label:"Measures proportion of phenotypic variance due to additive genetic effects",terms:["proportion.*variance.*additive","additive genetic.*effect","additive.*phenotyp.*varian","average effect.*allele"],w:2},
+{label:"Broad-sense (H²) includes all genetic variance (V_G = V_A + V_D + V_I)",terms:["broad.*v_g","broad.*all genetic","broad.*total genetic","h².*big.*all","v_d.*v_i","dominance.*epistatic","v_a.*v_d.*v_i","broad.*sense"],w:2},
+{label:"Estimated by parent-offspring regression or twin studies",terms:["parent.*offspring.*regress","twin stud","slope.*regress","mz.*dz","monozygotic.*dizygotic","anova.*famil","parent-offspring"],w:2},
+{label:"Predicts response to selection (breeder's equation R = h²S)",terms:["breeder.*equation","r.*h.*s","response to selection","predict.*selection","selection.*response"],w:2},
+{label:"Only additive variance responds to / is transmitted by selection",terms:["additive.*respond","additive.*transmit","additive.*parent.*offspring","only.*additive.*selection","v_a.*respond"],w:2},
+{label:"Misconception: heritability is about populations, not individuals",terms:["population.*statistic","not.*individual","population.*level","doesn.*mean.*individual","miscon.*individual","common.*mistak","variation.*within.*population","not.*80%.*your"],w:2}
+],
+model:"Narrow-sense heritability (h² = V_A / V_P) measures the proportion of phenotypic variance in a population attributable to additive genetic variance, which represents the average effects of alleles. It differs from broad-sense heritability (H² = V_G / V_P), which includes all genetic variance (additive + dominance + epistatic). h² can be estimated from the slope of parent-offspring regression or by comparing MZ and DZ twins. It is critical because only additive variance is reliably transmitted from parent to offspring and responds to selection (breeder's equation: R = h²S). A common misconception is that heritability describes individuals; it is actually a population-level statistic describing what fraction of variation among individuals is attributable to genetic differences, not the fraction of an individual's phenotype that is 'genetic.'",
+cat:"Quantitative"},
+
+{q:"Explain how transposable elements have shaped genome evolution. Discuss their mechanisms of transposition, give at least two specific examples of co-opted (domesticated) transposable elements, and explain how they contribute to genomic instability and disease.",
+concepts:[
+{label:"DNA transposons: cut-and-paste via transposase",terms:["cut.and.paste","dna transposon.*transposase","class ii.*transposase","class 2.*transposase","terminal inverted repeat","tir"],w:2},
+{label:"Retrotransposons: copy-and-paste via RNA intermediate and reverse transcriptase",terms:["copy.and.paste","retrotransposon.*rna.*intermediate","retrotransposon.*reverse transcriptase","class i.*reverse transcript","class 1.*rna intermediate","line.*reverse transcript"],w:2},
+{label:"LINEs encode reverse transcriptase; SINEs are non-autonomous",terms:["line.*encode.*reverse","line.*autonomous","sine.*non.autonomous","sine.*depend.*line","alu.*non.autonomous","sine.*hijack","sine.*borrow"],w:2},
+{label:"RAG1/RAG2 derived from DNA transposon (V(D)J recombination)",terms:["rag1","rag2","rag.*transpos","rag.*domesticat","rag.*v.d.j","rag.*immun","rag.*co.opt","rag.*exapt"],w:3},
+{label:"Syncytin from endogenous retrovirus (placenta formation)",terms:["syncytin","endogenous retrovir.*placent","syncytin.*placent","env.*gene.*placent","retrovir.*co.opt.*placent"],w:3},
+{label:"TEs serve as regulatory elements (enhancers, promoters)",terms:["te.*enhancer","te.*promoter","transpos.*regulat","transpos.*enhancer","te.*cis.regulat","co.opt.*regulat"],w:2},
+{label:"Ectopic recombination between dispersed repeats causes structural variants",terms:["ectopic recomb","ectopic.*delet","ectopic.*duplicat","recomb.*between.*repeat","dispersed repeat.*rearrange","nahr","non.allelic"],w:2},
+{label:"LINE-1 insertions cause disease (hemophilia, neurofibromatosis)",terms:["line.*disease","l1.*disease","line.*hemophilia","line.*neurofibromat","insertion.*disease","new.*insertion.*disorder","te.*mutation.*disease","1 in 250"],w:2}
+],
+model:"Transposable elements (TEs) have profoundly shaped genome evolution through multiple mechanisms. DNA transposons move by cut-and-paste via transposase, while retrotransposons (LINEs, SINEs, LTR elements) copy-and-paste through an RNA intermediate using reverse transcriptase. LINEs are autonomous (encode their own RT); SINEs like Alu are non-autonomous and depend on LINE machinery. TEs have been co-opted for host functions: RAG1/RAG2 recombinase, derived from a DNA transposon, enables V(D)J recombination for adaptive immunity; syncytin, from an endogenous retroviral envelope gene, is essential for placental cell fusion. Many TE-derived sequences now serve as enhancers and promoters. However, TEs also cause genomic instability: ectopic recombination between dispersed repeats causes deletions, duplications, and translocations, and active LINE-1 insertions cause diseases including hemophilia A and neurofibromatosis.",
+cat:"Genome Evolution"},
+
+{q:"Describe how a selective sweep is detected in population genomic data. Contrast it with background selection and balancing selection in terms of their effects on local genetic diversity and the signatures they leave in the genome.",
+concepts:[
+{label:"Selective sweep: positive selection drives beneficial allele to fixation",terms:["selective sweep.*positive","beneficial allele.*fixat","advantageous.*allele.*frequen","positive selection.*sweep","favorable.*allele.*spread"],w:2},
+{label:"Hitchhiking: linked variants carried along, reducing local diversity",terms:["hitchhik","linked.*variant.*carried","nearby.*variant.*along","linked neutral.*frequen","drag.*along","carry.*linked"],w:2},
+{label:"Sweep signature: extended haplotype homozygosity (EHH), reduced heterozygosity",terms:["extended haplotype","ehh","reduced.*heterozygos","reduced.*divers","long.*haplotype","homozygos.*around"],w:2},
+{label:"Sweep detected by Fst, Tajima's D, or iHS",terms:["fst","tajima","ihs","integrated haplotype","summary statistic","test.*selection","negative.*tajima"],w:1},
+{label:"Background selection: purifying selection reduces linked neutral diversity",terms:["background selection.*purif","purifying.*linked.*divers","background.*negative.*select","delet.*allele.*reduc.*divers","purif.*select.*neutral.*divers"],w:2},
+{label:"Background selection vs. sweep: both reduce diversity but different mechanisms",terms:["background.*similar.*sweep","both reduce.*divers","distinguish.*background.*sweep","background.*negative.*sweep.*positive","purif.*vs.*positive"],w:2},
+{label:"Balancing selection maintains multiple alleles / increases diversity",terms:["balancing.*maintain.*allele","balanc.*increas.*divers","balanc.*heterozygos.*high","balanc.*multiple allele","balanc.*polymorphi"],w:2},
+{label:"Balancing selection example: MHC/HLA polymorphism",terms:["mhc","hla","major histocompat","mhc.*polymorph","hla.*divers","pathogen.*mediat"],w:2}
+],
+model:"A selective sweep occurs when positive selection drives a beneficial allele to high frequency or fixation, carrying nearby linked variants along (genetic hitchhiking). This reduces local genetic diversity and creates extended haplotype homozygosity (EHH) around the selected site, detectable by statistics like iHS, Fst, or Tajima's D. Background selection produces a superficially similar pattern (reduced local diversity) but through a different mechanism: purifying selection against deleterious alleles at linked sites removes nearby neutral variation. Both reduce diversity, but sweeps show a more dramatic, localized reduction with long homozygous haplotypes. In contrast, balancing selection actively maintains multiple alleles in the population, increasing heterozygosity and diversity at the locus. A classic example is the extreme polymorphism at MHC/HLA loci, maintained by pathogen-mediated selection favoring diverse immune recognition.",
+cat:"Evolution"}
+];
+
+// ===== SMART GRADING ENGINE =====
+function gradeAnswer(idx){
+  const input=document.getElementById('sa-in-'+idx).value.trim();
+  if(!input){alert('Please write an answer first.');return}
+  const btn=document.getElementById('sa-btn-'+idx);
+  const fb=document.getElementById('sa-fb-'+idx);
+  btn.disabled=true;
+
+  setTimeout(()=>{
+    const q=SA[idx];
+    const low=input.toLowerCase().replace(/['']/g,"'").replace(/[""]/g,'"');
+    let totalW=0,earnedW=0;
+    const hits=[],misses=[];
+
+    q.concepts.forEach(c=>{
+      totalW+=c.w;
+      const matched=c.terms.some(t=>{
+        // Support regex-like patterns with .* for flexible matching
+        if(t.includes('.*')){
+          try{
+            const rx=new RegExp(t.replace(/\.\*/g,'.*'),'i');
+            return rx.test(low);
+          }catch(e){return false}
+        }
+        // Direct substring match
+        return low.includes(t.toLowerCase());
+      });
+      if(matched){earnedW+=c.w;hits.push(c.label)}
+      else{misses.push({label:c.label,w:c.w})}
+    });
+
+    // Bonus: length and depth heuristics
+    const wordCount=input.split(/\s+/).length;
+    let lengthBonus=0;
+    if(wordCount>80)lengthBonus=0.03;
+    if(wordCount>150)lengthBonus=0.06;
+
+    const rawPct=totalW>0?(earnedW/totalW):0;
+    const pct=Math.min(1,rawPct+lengthBonus);
+    const pctDisplay=Math.round(pct*100);
+
+    misses.sort((a,b)=>b.w-a.w);
+
+    let grade,icon,cls;
+    if(pct>=0.65){grade='good';icon='Strong answer!';cls='g-good'}
+    else if(pct>=0.35){grade='partial';icon='Partial credit — key concepts missing.';cls='g-partial'}
+    else{grade='needs';icon='Needs more depth and specificity.';cls='g-needs'}
+
+    let html=`<strong>${icon}</strong> <span style="float:right;font-family:'JetBrains Mono',monospace;font-size:0.82rem">${pctDisplay}%</span>`;
+    html+=`<div class="sa-score-bar"><div class="sa-score-fill ${pct>=0.65?'high':pct>=0.35?'mid':'low'}" style="width:${pctDisplay}%"></div></div>`;
+
+    // Concept tags
+    html+=`<div class="sa-concepts">`;
+    hits.forEach(h=>html+=`<span class="sa-concept hit">✓ ${h}</span>`);
+    misses.slice(0,5).forEach(m=>html+=`<span class="sa-concept miss">✗ ${m.label}</span>`);
+    html+=`</div>`;
+
+    // Expandable model answer
+    html+=`<details class="sa-details"><summary>View model answer</summary><div class="sa-model">${q.model}</div></details>`;
+
+    fb.className='sa-fb show '+cls;
+    fb.innerHTML=html;
+    btn.disabled=false;
+  },400);
+}
+
+function buildSA(){
+  const c=document.getElementById('sa-box');c.innerHTML='';
+  SA.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='sa-q';
+    d.innerHTML=`<div class="qn">Short Answer ${i+1} · ${q.cat}</div>
+    <p class="qt">${q.q}</p>
+    <textarea class="sa-ta" id="sa-in-${i}" placeholder="Write your answer here. Use specific terms and examples for the best score..."></textarea>
+    <div><button class="sa-btn" id="sa-btn-${i}" onclick="gradeAnswer(${i})">Grade My Answer</button></div>
+    <div class="sa-fb" id="sa-fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{buildQ();bf();bfc();buildSA()});
+</script>
+</body>
+</html>
