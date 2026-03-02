@@ -157,9 +157,40 @@
     .sa-concept.miss{background:var(--bg3);color:var(--text-dim);border:1px solid var(--border)}
 
     .footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-size:0.78rem;border-top:1px solid var(--border);margin-top:2rem}
-  </style>
+  
+/* ─── WCAG 2.1 AA: Visible focus indicators ─── */
+:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+.tab-btn:focus-visible, .nav-btn:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+/* ─── Skip link ─── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: #005fcc;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0 0 6px 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+</style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 
 <div class="hero">
   <div class="badge">Advanced Level</div>
@@ -167,7 +198,7 @@
   <p class="sub">Epigenetics, genomic architecture, quantitative genetics, advanced molecular mechanisms, and evolutionary genomics. Exam-level depth with worked reasoning.</p>
 </div>
 
-<div class="container">
+<div class="container" id="main-content" role="main">
 
   <div class="toc">
     <h2>Contents</h2>
