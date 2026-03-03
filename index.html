@@ -157,9 +157,40 @@
     .sa-concept.miss{background:var(--bg3);color:var(--text-dim);border:1px solid var(--border)}
 
     .footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-size:0.78rem;border-top:1px solid var(--border);margin-top:2rem}
-  </style>
+  
+/* ─── WCAG 2.1 AA: Visible focus indicators ─── */
+:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+.tab-btn:focus-visible, .nav-btn:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+/* ─── Skip link ─── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: #005fcc;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0 0 6px 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+</style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 
 <div class="hero">
   <div class="badge">Advanced Level</div>
@@ -167,7 +198,7 @@
   <p class="sub">Epigenetics, genomic architecture, quantitative genetics, advanced molecular mechanisms, and evolutionary genomics. Exam-level depth with worked reasoning.</p>
 </div>
 
-<div class="container">
+<div class="container" id="main-content" role="main">
 
   <div class="toc">
     <h2>Contents</h2>
@@ -257,7 +288,7 @@
       <p style="margin-left:1rem"><strong>Neofunctionalization</strong>: one copy acquires a new function.<br>
       <strong>Subfunctionalization</strong>: each copy retains part of the original function.<br>
       <strong>Pseudogenization</strong>: one copy accumulates mutations and becomes a pseudogene.</p>
-      <div class="ex"><div class="tag">Example</div>The globin gene family (α-globin cluster on chr 16, β-globin cluster on chr 11) arose from ancient gene duplications. Different family members are expressed at different developmental stages (embryonic → fetal → adult hemoglobin switching).</div>
+      <div class="ex"><div class="tag">Example</div>The globin gene family (α-globin cluster on chr 16, β-globin cluster on chr 11) arose from ancient gene duplications. Different family members are expressed at different developmental stages (embryonic <span aria-hidden="true">→</span> fetal <span aria-hidden="true">→</span> adult hemoglobin switching).</div>
     </div>
 
     <div class="card">
@@ -265,7 +296,7 @@
       <p>The genome produces a vast repertoire of functional non-coding RNAs:</p>
       <table class="tbl">
         <tr><th>Type</th><th>Size</th><th>Function</th></tr>
-        <tr><td>miRNA</td><td>~22 nt</td><td>Post-transcriptional silencing; binds 3' UTR of target mRNAs → degradation or translational repression</td></tr>
+        <tr><td>miRNA</td><td>~22 nt</td><td>Post-transcriptional silencing; binds 3' UTR of target mRNAs <span aria-hidden="true">→</span> degradation or translational repression</td></tr>
         <tr><td>siRNA</td><td>~21 nt</td><td>Gene silencing via RISC complex; used in RNAi experiments</td></tr>
         <tr><td>lncRNA</td><td>>200 nt</td><td>Diverse: chromatin remodeling (XIST), scaffolding, enhancer function, splicing regulation</td></tr>
         <tr><td>piRNA</td><td>24-31 nt</td><td>Transposon silencing in germline</td></tr>
@@ -296,9 +327,9 @@
     <div class="card">
       <h3>Signal Transduction &amp; Transcription Factor Cascades</h3>
       <p>Extracellular signals ultimately regulate gene expression by activating transcription factors:</p>
-      <p style="margin-left:1rem"><strong>RTK/Ras/MAPK pathway</strong>: growth factor → receptor tyrosine kinase → Ras → Raf → MEK → ERK → transcription factor phosphorylation. Mutations in Ras are found in ~30% of cancers.<br>
+      <p style="margin-left:1rem"><strong>RTK/Ras/MAPK pathway</strong>: growth factor <span aria-hidden="true">→</span> receptor tyrosine kinase <span aria-hidden="true">→</span> Ras <span aria-hidden="true">→</span> Raf <span aria-hidden="true">→</span> MEK <span aria-hidden="true">→</span> ERK <span aria-hidden="true">→</span> transcription factor phosphorylation. Mutations in Ras are found in ~30% of cancers.<br>
       <strong>Wnt/β-catenin pathway</strong>: Wnt signal stabilizes β-catenin, which enters nucleus and activates TCF/LEF target genes. APC mutations (loss of β-catenin degradation) drive colorectal cancer.<br>
-      <strong>p53 pathway</strong>: DNA damage activates ATM/ATR kinases → p53 stabilized → activates cell cycle arrest (p21), DNA repair, or apoptosis genes. p53 is mutated in >50% of cancers.</p>
+      <strong>p53 pathway</strong>: DNA damage activates ATM/ATR kinases <span aria-hidden="true">→</span> p53 stabilized <span aria-hidden="true">→</span> activates cell cycle arrest (p21), DNA repair, or apoptosis genes. p53 is mutated in >50% of cancers.</p>
     </div>
   </div>
 
@@ -313,7 +344,7 @@
       <p>For a quantitative trait, total phenotypic variance is partitioned:</p>
       <p style="text-align:center;margin:0.4rem 0"><span class="fi">V<sub>P</sub> = V<sub>G</sub> + V<sub>E</sub> + V<sub>GxE</sub></span></p>
       <p>Genetic variance can be further split: <span class="fi">V<sub>G</sub> = V<sub>A</sub> + V<sub>D</sub> + V<sub>I</sub></span></p>
-      <p style="margin-left:1rem"><strong>V<sub>A</sub></strong> (additive): due to the average effects of alleles; the only component that responds to selection and is transmitted parent→offspring.<br>
+      <p style="margin-left:1rem"><strong>V<sub>A</sub></strong> (additive): due to the average effects of alleles; the only component that responds to selection and is transmitted parent<span aria-hidden="true">→</span>offspring.<br>
       <strong>V<sub>D</sub></strong> (dominance): due to interactions between alleles at the same locus.<br>
       <strong>V<sub>I</sub></strong> (epistatic/interaction): due to interactions between alleles at different loci.</p>
     </div>
@@ -355,9 +386,9 @@
         <tr><td>Cell cycle</td><td>S/G2 phase (sister chromatid available)</td><td>Any phase</td></tr>
         <tr><td>Accuracy</td><td>Error-free</td><td>Error-prone (can introduce indels)</td></tr>
         <tr><td>Key proteins</td><td>BRCA1, BRCA2, RAD51</td><td>Ku70/Ku80, DNA-PKcs, Ligase IV</td></tr>
-        <tr><td>Disease link</td><td>BRCA1/2 mutations → breast/ovarian cancer</td><td>Defects → immunodeficiency (V(D)J recombination uses NHEJ)</td></tr>
+        <tr><td>Disease link</td><td>BRCA1/2 mutations <span aria-hidden="true">→</span> breast/ovarian cancer</td><td>Defects <span aria-hidden="true">→</span> immunodeficiency (V(D)J recombination uses NHEJ)</td></tr>
       </table>
-      <div class="kp"><div class="tag">CRISPR Connection</div>CRISPR-Cas9 makes a DSB. If the cell repairs by NHEJ → indels → gene knockout. If a donor template is provided and HR occurs → precise gene editing (knock-in).</div>
+      <div class="kp"><div class="tag">CRISPR Connection</div>CRISPR-Cas9 makes a DSB. If the cell repairs by NHEJ <span aria-hidden="true">→</span> indels <span aria-hidden="true">→</span> gene knockout. If a donor template is provided and HR occurs <span aria-hidden="true">→</span> precise gene editing (knock-in).</div>
     </div>
 
     <div class="card">
@@ -408,7 +439,7 @@
     <div class="card">
       <h3>Oncogenes &amp; Tumor Suppressors</h3>
       <table class="tbl">
-        <tr><th></th><th>Proto-oncogenes → Oncogenes</th><th>Tumor Suppressors</th></tr>
+        <tr><th></th><th>Proto-oncogenes <span aria-hidden="true">→</span> Oncogenes</th><th>Tumor Suppressors</th></tr>
         <tr><td>Normal function</td><td>Promote cell growth/division</td><td>Inhibit growth, promote apoptosis or repair</td></tr>
         <tr><td>Mutation type</td><td><strong>Gain-of-function</strong> (dominant)</td><td><strong>Loss-of-function</strong> (recessive at cell level)</td></tr>
         <tr><td>Copies needed</td><td>One mutant allele sufficient</td><td>Both alleles must be inactivated (<strong>Knudson's two-hit</strong>)</td></tr>
@@ -460,14 +491,14 @@
 
     <div class="card">
       <h3>Next-Generation Sequencing (NGS)</h3>
-      <p><strong>Illumina</strong> (sequencing by synthesis): library prep → bridge amplification on flow cell → reversible terminator chemistry → massively parallel short reads (150-300 bp). Dominant platform for most applications.</p>
+      <p><strong>Illumina</strong> (sequencing by synthesis): library prep <span aria-hidden="true">→</span> bridge amplification on flow cell <span aria-hidden="true">→</span> reversible terminator chemistry <span aria-hidden="true">→</span> massively parallel short reads (150-300 bp). Dominant platform for most applications.</p>
       <p><strong>Long-read</strong>: PacBio (SMRT, single molecule) and Oxford Nanopore produce reads >10 kb, enabling resolution of structural variants, repetitive regions, and phasing of haplotypes. Higher error rate, corrected by depth or hybrid approaches.</p>
       <p><strong>Applications</strong>: whole genome sequencing, RNA-seq (transcriptome), ChIP-seq (protein-DNA interactions), ATAC-seq (open chromatin), bisulfite-seq (DNA methylation), single-cell sequencing.</p>
     </div>
 
     <div class="card">
       <h3>Beyond CRISPR-Cas9</h3>
-      <p><strong>Base editors</strong>: fuse catalytically dead Cas9 (dCas9) with a deaminase to convert C→T or A→G without making a DSB. No donor template needed.</p>
+      <p><strong>Base editors</strong>: fuse catalytically dead Cas9 (dCas9) with a deaminase to convert C<span aria-hidden="true">→</span>T or A<span aria-hidden="true">→</span>G without making a DSB. No donor template needed.</p>
       <p><strong>Prime editing</strong>: fuse Cas9 nickase with reverse transcriptase plus a prime editing guide RNA (pegRNA) that encodes the desired edit. Can make any small edit (substitutions, insertions, deletions) without DSBs or donor DNA.</p>
       <p><strong>CRISPRi/CRISPRa</strong>: dCas9 fused to repressor (KRAB) or activator (VP64) domains for gene silencing or activation without cutting DNA.</p>
       <div class="kp"><div class="tag">Advantage</div>Base editing and prime editing avoid the error-prone DSB repair step, reducing unwanted indels and off-target effects compared to standard Cas9.</div>
@@ -541,7 +572,7 @@ const QD=[
 ];
 
 function buildQ(){const c=document.getElementById('quiz-box');c.innerHTML='';QD.forEach((q,i)=>{const d=document.createElement('div');d.className='qq';d.innerHTML=`<div class="qn">Question ${i+1}</div><p class="qt">${q.q}</p><ul class="qo">${q.o.map((o,j)=>`<li><label id="l${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="qfb" id="f${i}"></div>`;c.appendChild(d)})}
-function checkQ(){let s=0;QD.forEach((q,i)=>{const sel=document.querySelector(`input[name="q${i}"]:checked`);const fb=document.getElementById('f'+i);q.o.forEach((_,j)=>document.getElementById(`l${i}-${j}`).className='');if(sel){const v=+sel.value;if(v===q.a){s++;document.getElementById(`l${i}-${v}`).className='ok';fb.className='qfb show y';fb.textContent='✓ '+q.e}else{document.getElementById(`l${i}-${v}`).className='no';document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='✗ '+q.e}}else{document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='Not answered. '+q.e}});const sc=document.getElementById('qsc');const p=Math.round(s/QD.length*100);document.getElementById('sn').textContent=s+' / '+QD.length;document.getElementById('sm').textContent=p+'% — '+(p>=90?'Outstanding!':p>=75?'Solid work!':p>=55?'Good start. Review the concepts above.':'This material is dense. Re-read the sections and try again.');sc.style.display='block';sc.scrollIntoView({behavior:'smooth',block:'center'})}
+function checkQ(){let s=0;QD.forEach((q,i)=>{const sel=document.querySelector(`input[name="q${i}"]:checked`);const fb=document.getElementById('f'+i);q.o.forEach((_,j)=>document.getElementById(`l${i}-${j}`).className='');if(sel){const v=+sel.value;if(v===q.a){s++;document.getElementById(`l${i}-${v}`).className='ok';fb.className='qfb show y';fb.textContent='<span aria-hidden="true">✓</span> '+q.e}else{document.getElementById(`l${i}-${v}`).className='no';document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='<span aria-hidden="true">✗</span> '+q.e}}else{document.getElementById(`l${i}-${q.a}`).className='sr';fb.className='qfb show n';fb.textContent='Not answered. '+q.e}});const sc=document.getElementById('qsc');const p=Math.round(s/QD.length*100);document.getElementById('sn').textContent=s+' / '+QD.length;document.getElementById('sm').textContent=p+'% — '+(p>=90?'Outstanding!':p>=75?'Solid work!':p>=55?'Good start. Review the concepts above.':'This material is dense. Re-read the sections and try again.');sc.style.display='block';sc.scrollIntoView({behavior:'smooth',block:'center'})}
 function resetQ(){QD.forEach((q,i)=>{document.querySelectorAll(`input[name="q${i}"]`).forEach(r=>r.checked=false);q.o.forEach((_,j)=>document.getElementById(`l${i}-${j}`).className='');document.getElementById('f'+i).className='qfb'});document.getElementById('qsc').style.display='none';document.getElementById('quiz-box').scrollIntoView({behavior:'smooth'})}
 
 // ===== FLASHCARDS =====
@@ -566,7 +597,7 @@ const FD=[
 {f:"What is Knudson's two-hit hypothesis?",b:"Both alleles of a tumor suppressor must be inactivated. Familial: inherit one hit + somatic second hit (earlier, bilateral). Sporadic: both hits somatic (later, unilateral). Originally described for retinoblastoma (RB).",c:"Cancer"},
 {f:"What is chromothripsis?",b:"A single catastrophic event shattering a chromosome into many fragments that are randomly reassembled, causing massive rearrangements. Found in ~2-3% of cancers and some congenital disorders.",c:"Cancer"},
 {f:"Explain the neutral theory.",b:"Kimura: most molecular evolution results from drift of selectively neutral mutations. Rate of neutral substitution = mutation rate (μ). Forms the basis of the molecular clock.",c:"Evolution"},
-{f:"What does Ka/Ks > 1 mean?",b:"Non-synonymous substitutions exceed synonymous ones → positive (adaptive) selection driving amino acid changes. Ka/Ks < 1 = purifying selection. Ka/Ks ≈ 1 = neutral.",c:"Evolution"},
+{f:"What does Ka/Ks > 1 mean?",b:"Non-synonymous substitutions exceed synonymous ones <span aria-hidden="true">→</span> positive (adaptive) selection driving amino acid changes. Ka/Ks < 1 = purifying selection. Ka/Ks ≈ 1 = neutral.",c:"Evolution"},
 {f:"What is a selective sweep?",b:"Positive selection drives a beneficial allele to fixation, dragging linked variants along (hitchhiking). Reduces local diversity, creates extended haplotype homozygosity.",c:"Evolution"},
 {f:"Coalescent theory basics?",b:"Traces alleles backward to their MRCA. Expected coalescence time for 2 alleles in diploid population of size N = 2N generations. Foundation for estimating demographic history from sequence data.",c:"Evolution"},
 {f:"How does prime editing work?",b:"Cas9 nickase + reverse transcriptase + pegRNA. Nicks one strand, RT writes the edit from the pegRNA template. No DSB, no donor template needed. Can make any small substitution, insertion, or deletion.",c:"Biotech"},
@@ -610,7 +641,7 @@ concepts:[
 {label:"HR key proteins: BRCA1, BRCA2, RAD51",terms:["brca1","brca2","rad51","brca.*hr"],w:2},
 {label:"NHEJ key proteins: Ku70/Ku80, DNA-PKcs, Ligase IV",terms:["ku70","ku80","ku7","dna.pk","ligase iv","ligase 4"],w:1},
 {label:"BRCA mutations impair HR and cause cancer",terms:["brca.*cancer","brca.*breast","brca.*ovarian","brca.*defect.*cancer","brca.*mutation.*cancer","hr.*defect.*cancer"],w:2},
-{label:"CRISPR connection: NHEJ → knockout, HR with template → knock-in",terms:["crispr.*nhej.*knockout","crispr.*hr.*knock.in","crispr.*nhej.*indel","cas9.*nhej","cas9.*hr.*template","donor template.*hr","crispr.*repair pathway"],w:2}
+{label:"CRISPR connection: NHEJ <span aria-hidden="true">→</span> knockout, HR with template <span aria-hidden="true">→</span> knock-in",terms:["crispr.*nhej.*knockout","crispr.*hr.*knock.in","crispr.*nhej.*indel","cas9.*nhej","cas9.*hr.*template","donor template.*hr","crispr.*repair pathway"],w:2}
 ],
 model:"Homologous recombination (HR) uses the sister chromatid as a template for error-free repair and operates during S/G2 phase when the sister chromatid is available. Key proteins include BRCA1, BRCA2, and RAD51. Non-homologous end joining (NHEJ) directly ligates broken DNA ends without a template, making it available in any cell cycle phase but error-prone (can introduce indels). Key NHEJ proteins include Ku70/Ku80, DNA-PKcs, and Ligase IV. BRCA1/2 mutations impair HR, forcing reliance on error-prone NHEJ and predisposing to breast and ovarian cancer. In CRISPR technology, Cas9-induced DSBs repaired by NHEJ produce indels (gene knockout), while providing a donor template can engage HR for precise knock-in edits.",
 cat:"Molecular"},
@@ -725,8 +756,8 @@ function gradeAnswer(idx){
 
     // Concept tags
     html+=`<div class="sa-concepts">`;
-    hits.forEach(h=>html+=`<span class="sa-concept hit">✓ ${h}</span>`);
-    misses.slice(0,5).forEach(m=>html+=`<span class="sa-concept miss">✗ ${m.label}</span>`);
+    hits.forEach(h=>html+=`<span class="sa-concept hit"><span aria-hidden="true">✓</span> ${h}</span>`);
+    misses.slice(0,5).forEach(m=>html+=`<span class="sa-concept miss"><span aria-hidden="true">✗</span> ${m.label}</span>`);
     html+=`</div>`;
 
     // Expandable model answer
