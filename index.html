@@ -22,7 +22,7 @@
       --teal: #5ba89a;
       --teal-bg: rgba(91,168,154,0.08);
       --teal-border: rgba(91,168,154,0.25);
-      --red: #c75f5f;
+      --red: #dc6e6e;
       --red-bg: rgba(199,95,95,0.08);
       --red-border: rgba(199,95,95,0.25);
       --blue: #6b8fc4;
@@ -78,7 +78,7 @@
     .fi{font-family:'JetBrains Mono',monospace;background:var(--blue-bg);padding:0.1rem 0.4rem;border-radius:3px;font-size:0.84rem;color:var(--blue);white-space:nowrap}
 
     .tbl{width:100%;border-collapse:collapse;font-size:0.89rem;margin:0.65rem 0}
-    .tbl th{text-align:left;padding:0.4rem 0.65rem;background:var(--bg3);font-weight:600;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-soft);border-bottom:1px solid var(--border)}
+    .tbl th{text-align:left;padding:0.4rem 0.65rem;background:var(--bg3);font-weight:600;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.05em;color:#918e87;border-bottom:1px solid var(--border)}
     .tbl td{padding:0.38rem 0.65rem;border-bottom:1px solid var(--border);color:var(--text)}
     .tbl tr:last-child td{border-bottom:none}
 
@@ -154,9 +154,9 @@
     .sa-concepts{margin-top:0.4rem}
     .sa-concept{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:2px;margin:0.15rem 0.2rem 0.15rem 0}
     .sa-concept.hit{background:var(--green-bg);color:#8ad494;border:1px solid var(--green-border)}
-    .sa-concept.miss{background:var(--bg3);color:var(--text-dim);border:1px solid var(--border)}
+    .sa-concept.miss{background:var(--bg3);color:#8c8a84;border:1px solid var(--border)}
 
-    .footer{text-align:center;padding:2rem 1rem;color:var(--text-dim);font-size:0.78rem;border-top:1px solid var(--border);margin-top:2rem}
+    .footer{text-align:center;padding:2rem 1rem;color:var(--text-soft);font-size:0.78rem;border-top:1px solid var(--border);margin-top:2rem}
   
 /* ─── WCAG 2.1 AA: Visible focus indicators ─── */
 :focus-visible {
@@ -186,35 +186,73 @@
   top: 0;
 }
 
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Disclaimer banner ─── */
+.disclaimer-banner{background:#161810;border-bottom:1px solid var(--border)}
+.disclaimer-toggle{display:flex;align-items:center;justify-content:center;gap:0.6rem;padding:0.45rem 2rem;width:100%;border:none;background:transparent;cursor:pointer;font-size:0.72rem;color:var(--text-soft);font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;transition:background 0.15s}
+.disclaimer-toggle:hover{background:rgba(255,255,255,0.03)}
+.disc-arrow{transition:transform 0.3s;font-size:0.65rem}
+.disc-arrow.open{transform:rotate(180deg)}
+.disclaimer-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.4s ease;padding:0 2rem}
+.disclaimer-body.open{max-height:400px;padding:0 2rem 1.1rem}
+.disclaimer-body-inner{max-width:860px;margin:0 auto;font-size:0.8rem;line-height:1.7;color:var(--text-soft)}
+.disclaimer-body-inner p{margin-bottom:0.45rem}
+.disclaimer-body-inner p:last-child{margin-bottom:0}
+
 </style>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
+<!-- DISCLAIMER BANNER -->
+<div class="disclaimer-banner" role="region" aria-label="Important disclaimer">
+  <button type="button" class="disclaimer-toggle" onclick="toggleDisclaimer()" aria-expanded="false" aria-controls="disc-body">
+    <span aria-hidden="true">⚠</span>
+    <span>Important Disclaimer</span>
+    <span class="disc-arrow" id="disc-arrow" aria-hidden="true">▼</span>
+  </button>
+  <div class="disclaimer-body" id="disc-body">
+    <div class="disclaimer-body-inner">
+      <p>These study resources are provided free of charge for educational purposes only. They are supplemental study aids and should not substitute your course textbooks, lectures, or instructor guidance.</p>
+      <p>While every effort has been made to ensure accuracy, this content may contain errors or outdated information. Science is constantly evolving — always verify facts and terminology against your official course materials.</p>
+      <p>No guarantees are made regarding completeness, accuracy, or reliability. These materials are not affiliated with any university, testing organization, or textbook publisher.</p>
+    </div>
+  </div>
+</div>
 
-<div class="hero">
+
+<header class="hero" role="banner">
   <div class="badge">Advanced Level</div>
   <h1>Advanced Genetics</h1>
   <p class="sub">Epigenetics, genomic architecture, quantitative genetics, advanced molecular mechanisms, and evolutionary genomics. Exam-level depth with worked reasoning.</p>
-</div>
+</header>
 
 <div class="container" id="main-content" role="main">
 
   <div class="toc">
     <h2>Contents</h2>
     <div class="toc-grid">
-      <a href="#s1"><span class="n">01</span>Epigenetics &amp; Chromatin</a>
-      <a href="#s2"><span class="n">02</span>Genomic Architecture</a>
-      <a href="#s3"><span class="n">03</span>Advanced Gene Regulation</a>
-      <a href="#s4"><span class="n">04</span>Quantitative Genetics</a>
-      <a href="#s5"><span class="n">05</span>Advanced Molecular Mechanisms</a>
-      <a href="#s6"><span class="n">06</span>Transposable Elements &amp; Genome Evolution</a>
-      <a href="#s7"><span class="n">07</span>Cancer Genetics</a>
-      <a href="#s8"><span class="n">08</span>Population &amp; Evolutionary Genomics</a>
-      <a href="#s9"><span class="n">09</span>Advanced Biotechnology</a>
-      <a href="#quiz"><span class="n">10</span>Multiple Choice Quiz</a>
-      <a href="#fc"><span class="n">11</span>Flashcards</a>
-      <a href="#sa"><span class="n">12</span>Short Answer (Graded)</a>
+      <a href="#s1"><span class="n" aria-hidden="true">01</span>Epigenetics &amp; Chromatin</a>
+      <a href="#s2"><span class="n" aria-hidden="true">02</span>Genomic Architecture</a>
+      <a href="#s3"><span class="n" aria-hidden="true">03</span>Advanced Gene Regulation</a>
+      <a href="#s4"><span class="n" aria-hidden="true">04</span>Quantitative Genetics</a>
+      <a href="#s5"><span class="n" aria-hidden="true">05</span>Advanced Molecular Mechanisms</a>
+      <a href="#s6"><span class="n" aria-hidden="true">06</span>Transposable Elements &amp; Genome Evolution</a>
+      <a href="#s7"><span class="n" aria-hidden="true">07</span>Cancer Genetics</a>
+      <a href="#s8"><span class="n" aria-hidden="true">08</span>Population &amp; Evolutionary Genomics</a>
+      <a href="#s9"><span class="n" aria-hidden="true">09</span>Advanced Biotechnology</a>
+      <a href="#quiz"><span class="n" aria-hidden="true">10</span>Multiple Choice Quiz</a>
+      <a href="#fc"><span class="n" aria-hidden="true">11</span>Flashcards</a>
+      <a href="#sa"><span class="n" aria-hidden="true">12</span>Short Answer (Graded)</a>
     </div>
   </div>
 
@@ -519,8 +557,8 @@
     <p class="ssub">20 advanced questions. Select the best answer, then check your score.</p>
     <div id="quiz-box"></div>
     <div class="qc">
-      <button class="btn bp" onclick="checkQ()">Check My Answers</button>
-      <button class="btn bs" onclick="resetQ()">Reset</button>
+      <button type="button" class="btn bp" onclick="checkQ()">Check My Answers</button>
+      <button type="button" class="btn bs" onclick="resetQ()">Reset</button>
     </div>
     <div class="qsc" id="qsc"><div class="big" id="sn"></div><div class="sm" id="sm"></div></div>
   </div>
@@ -540,10 +578,10 @@
     <div class="stitle">Short Answer (Auto-Graded)</div>
     <p class="ssub">Write a thorough answer, then click "Grade." The grader checks for key concepts using weighted keyword and phrase matching with synonym recognition. Include specific terms for the best score.</p>
     <div id="sa-box"></div>
-    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:1.5rem;font-style:italic">Grading uses embedded concept matching with synonyms and partial credit. No API calls are made. For the most accurate score, use specific terminology.</p>
+    <p style="font-size:0.78rem;color:var(--text-soft);margin-top:1.5rem;font-style:italic">Grading uses embedded concept matching with synonyms and partial credit. No API calls are made. For the most accurate score, use specific terminology.</p>
   </div>
 
-  <div class="footer">Advanced Genetics &mdash; Study Reference</div>
+  <footer class="footer" role="contentinfo">Advanced Genetics &mdash; Study Reference</footer>
 </div>
 
 <script>
@@ -597,7 +635,7 @@ const FD=[
 {f:"What is Knudson's two-hit hypothesis?",b:"Both alleles of a tumor suppressor must be inactivated. Familial: inherit one hit + somatic second hit (earlier, bilateral). Sporadic: both hits somatic (later, unilateral). Originally described for retinoblastoma (RB).",c:"Cancer"},
 {f:"What is chromothripsis?",b:"A single catastrophic event shattering a chromosome into many fragments that are randomly reassembled, causing massive rearrangements. Found in ~2-3% of cancers and some congenital disorders.",c:"Cancer"},
 {f:"Explain the neutral theory.",b:"Kimura: most molecular evolution results from drift of selectively neutral mutations. Rate of neutral substitution = mutation rate (μ). Forms the basis of the molecular clock.",c:"Evolution"},
-{f:"What does Ka/Ks > 1 mean?",b:"Non-synonymous substitutions exceed synonymous ones <span aria-hidden="true">→</span> positive (adaptive) selection driving amino acid changes. Ka/Ks < 1 = purifying selection. Ka/Ks ≈ 1 = neutral.",c:"Evolution"},
+{f:"What does Ka/Ks > 1 mean?",b:"Non-synonymous substitutions exceed synonymous ones <span aria-hidden='true'>→</span> positive (adaptive) selection driving amino acid changes. Ka/Ks < 1 = purifying selection. Ka/Ks ≈ 1 = neutral.",c:"Evolution"},
 {f:"What is a selective sweep?",b:"Positive selection drives a beneficial allele to fixation, dragging linked variants along (hitchhiking). Reduces local diversity, creates extended haplotype homozygosity.",c:"Evolution"},
 {f:"Coalescent theory basics?",b:"Traces alleles backward to their MRCA. Expected coalescence time for 2 alleles in diploid population of size N = 2N generations. Foundation for estimating demographic history from sequence data.",c:"Evolution"},
 {f:"How does prime editing work?",b:"Cas9 nickase + reverse transcriptase + pegRNA. Nicks one strand, RT writes the edit from the pegRNA template. No DSB, no donor template needed. Can make any small substitution, insertion, or deletion.",c:"Biotech"},
@@ -606,10 +644,11 @@ const FD=[
 ];
 
 let ac='All';
+function flipFC(el){el.classList.toggle('fl');el.setAttribute('aria-label',el.classList.contains('fl')?'Answer revealed — press Space or Enter to flip back':el.querySelector('.q').textContent.trim()+' — press Space or Enter to flip');}
 function gc(){return['All',...new Set(FD.map(f=>f.c))]}
-function bf(){document.getElementById('fcf').innerHTML=gc().map(c=>`<button class="fcb ${c==='All'?'active':''}" onclick="ff('${c}')">${c}</button>`).join('')}
+function bf(){document.getElementById('fcf').innerHTML=gc().map(c=>`<button type="button" class="fcb ${c==='All'?'active':''}" onclick="ff('${c}')">${c}</button>`).join('')}
 function ff(c){ac=c;document.querySelectorAll('.fcb').forEach(b=>b.classList.toggle('active',b.textContent===c));bfc()}
-function bfc(){const a=ac==='All'?FD:FD.filter(f=>f.c===ac);document.getElementById('fcc').innerHTML=a.map(f=>`<div class="fc" onclick="this.classList.toggle('fl')"><div class="fci"><div class="fcfr"><div class="t">${f.c}</div><div class="q">${f.f}</div><div class="h">click to flip</div></div><div class="fcbk"><div class="t">Answer</div><div class="a">${f.b}</div></div></div></div>`).join('')}
+function bfc(){const a=ac==='All'?FD:FD.filter(f=>f.c===ac);document.getElementById('fcc').innerHTML=a.map(f=>`<div class="fc" role="button" tabindex="0" aria-label="${f.f} — press Space or Enter to flip" onclick="flipFC(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipFC(this);}"><div class="fci"><div class="fcfr"><div class="t" aria-hidden="true">${f.c}</div><div class="q">${f.f}</div><div class="h" aria-hidden="true">click to flip</div></div><div class="fcbk"><div class="t" aria-hidden="true">Answer</div><div class="a">${f.b}</div></div></div></div>`).join('')}
 
 // ===== SHORT ANSWER GRADING ENGINE =====
 // Each concept has: label (displayed), terms (array of synonyms/phrases to match), weight (importance)
@@ -641,7 +680,7 @@ concepts:[
 {label:"HR key proteins: BRCA1, BRCA2, RAD51",terms:["brca1","brca2","rad51","brca.*hr"],w:2},
 {label:"NHEJ key proteins: Ku70/Ku80, DNA-PKcs, Ligase IV",terms:["ku70","ku80","ku7","dna.pk","ligase iv","ligase 4"],w:1},
 {label:"BRCA mutations impair HR and cause cancer",terms:["brca.*cancer","brca.*breast","brca.*ovarian","brca.*defect.*cancer","brca.*mutation.*cancer","hr.*defect.*cancer"],w:2},
-{label:"CRISPR connection: NHEJ <span aria-hidden="true">→</span> knockout, HR with template <span aria-hidden="true">→</span> knock-in",terms:["crispr.*nhej.*knockout","crispr.*hr.*knock.in","crispr.*nhej.*indel","cas9.*nhej","cas9.*hr.*template","donor template.*hr","crispr.*repair pathway"],w:2}
+{label:"CRISPR connection: NHEJ <span aria-hidden='true'>→</span> knockout, HR with template <span aria-hidden='true'>→</span> knock-in",terms:["crispr.*nhej.*knockout","crispr.*hr.*knock.in","crispr.*nhej.*indel","cas9.*nhej","cas9.*hr.*template","donor template.*hr","crispr.*repair pathway"],w:2}
 ],
 model:"Homologous recombination (HR) uses the sister chromatid as a template for error-free repair and operates during S/G2 phase when the sister chromatid is available. Key proteins include BRCA1, BRCA2, and RAD51. Non-homologous end joining (NHEJ) directly ligates broken DNA ends without a template, making it available in any cell cycle phase but error-prone (can introduce indels). Key NHEJ proteins include Ku70/Ku80, DNA-PKcs, and Ligase IV. BRCA1/2 mutations impair HR, forcing reliance on error-prone NHEJ and predisposing to breast and ovarian cancer. In CRISPR technology, Cas9-induced DSBs repaired by NHEJ produce indels (gene knockout), while providing a donor template can engage HR for precise knock-in edits.",
 cat:"Molecular"},
@@ -756,8 +795,8 @@ function gradeAnswer(idx){
 
     // Concept tags
     html+=`<div class="sa-concepts">`;
-    hits.forEach(h=>html+=`<span class="sa-concept hit"><span aria-hidden="true">✓</span> ${h}</span>`);
-    misses.slice(0,5).forEach(m=>html+=`<span class="sa-concept miss"><span aria-hidden="true">✗</span> ${m.label}</span>`);
+    hits.forEach(h=>html+=`<span class="sa-concept hit"><span aria-hidden='true'>✓</span> ${h}</span>`);
+    misses.slice(0,5).forEach(m=>html+=`<span class="sa-concept miss"><span aria-hidden='true'>✗</span> ${m.label}</span>`);
     html+=`</div>`;
 
     // Expandable model answer
@@ -776,13 +815,23 @@ function buildSA(){
     d.innerHTML=`<div class="qn">Short Answer ${i+1} · ${q.cat}</div>
     <p class="qt">${q.q}</p>
     <textarea class="sa-ta" id="sa-in-${i}" placeholder="Write your answer here. Use specific terms and examples for the best score..."></textarea>
-    <div><button class="sa-btn" id="sa-btn-${i}" onclick="gradeAnswer(${i})">Grade My Answer</button></div>
+    <div><button type="button" class="sa-btn" id="sa-btn-${i}" onclick="gradeAnswer(${i})">Grade My Answer</button></div>
     <div class="sa-fb" id="sa-fb-${i}"></div>`;
     c.appendChild(d);
   });
 }
 
 document.addEventListener('DOMContentLoaded',()=>{buildQ();bf();bfc();buildSA()});
+
+function toggleDisclaimer(){
+  const body=document.getElementById('disc-body');
+  const arrow=document.getElementById('disc-arrow');
+  const btn=document.querySelector('.disclaimer-toggle');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+  btn.setAttribute('aria-expanded',body.classList.contains('open')?'true':'false');
+}
+
 </script>
 </body>
 </html>
